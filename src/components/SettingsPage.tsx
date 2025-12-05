@@ -20,6 +20,7 @@ import { API_ENDPOINTS } from "../config/constants";
 import AIModelSelectorEnhanced from "./AIModelSelectorEnhanced";
 import type { UpdateInfoResult } from "../types/electron";
 import MicrophoneSelector from "./ui/MicrophoneSelector";
+import HotkeyRecorder from "./ui/HotkeyRecorder";
 const InteractiveKeyboard = React.lazy(() => import("./ui/Keyboard"));
 
 export type SettingsSectionType =
@@ -722,35 +723,13 @@ export default function SettingsPage({
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Activation Key
-                  </label>
-                  <Input
-                    placeholder="Default: ` (backtick)"
+                  <HotkeyRecorder
                     value={dictationKey}
-                    onChange={(e) => setDictationKey(e.target.value)}
-                    className="text-center text-lg font-mono"
+                    onChange={setDictationKey}
                   />
-                  <p className="text-xs text-gray-500 mt-2">
-                    Press this key from anywhere to start/stop dictation
+                  <p className="text-xs text-gray-500 mt-2 text-center">
+                    Click to record. Press any key combination (e.g., Ctrl + Space) to set it as your dictation hotkey.
                   </p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-medium text-gray-900 mb-3">
-                    Click any key to select it:
-                  </h4>
-                  <React.Suspense
-                    fallback={
-                      <div className="h-32 flex items-center justify-center text-gray-500">
-                        Loading keyboard...
-                      </div>
-                    }
-                  >
-                    <InteractiveKeyboard
-                      selectedKey={dictationKey}
-                      setSelectedKey={setDictationKey}
-                    />
-                  </React.Suspense>
                 </div>
                 <Button
                   onClick={saveKey}

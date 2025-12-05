@@ -7,5 +7,12 @@ export function formatHotkeyLabel(hotkey?: string | null): string {
     return "🌐 Globe";
   }
 
-  return hotkey;
+  return hotkey
+    .split("+")
+    .map((part) => {
+      if (part === "CommandOrControl") return "Ctrl";
+      if (part === "Control") return "Ctrl";
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join(" + ");
 }
