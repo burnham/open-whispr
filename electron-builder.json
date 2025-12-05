@@ -1,5 +1,5 @@
 {
-  "appId": "com.herotools.openwispr",
+  "appId": "com.nonrealxr.openwhispr",
   "productName": "OpenWhispr",
   "directories": {
     "output": "dist"
@@ -50,7 +50,7 @@
     "hardenedRuntime": true,
     "entitlements": "resources/mac/entitlements.mac.plist",
     "entitlementsInherit": "resources/mac/entitlements.mac.plist",
-    "identity": "HeroTools Inc. (9R85XFMH59)",
+    "identity": "NonReal XR",
     "extendInfo": {
       "LSUIElement": false,
       "NSMicrophoneUsageDescription": "OpenWhispr needs microphone access for speech-to-text transcription.",

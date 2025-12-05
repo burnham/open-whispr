@@ -9,8 +9,8 @@
     "url": "git+https://github.com/burnham/open-whispr.git"
   },
   "author": {
-    "name": "Burnham (Forked from OpenWhispr Team)",
-    "email": "support@openwhispr.com"
+    "name": "Georgios Burnham (NonReal XR)",
+    "email": "support@nonrealxr.com"
   },
   "license": "MIT",
   "devDependencies": {
