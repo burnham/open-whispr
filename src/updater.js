@@ -33,7 +33,7 @@ class UpdateManager {
     // Configure auto-updater for GitHub releases
     autoUpdater.setFeedURL({
       provider: "github",
-      owner: "HeroTools",
+      owner: "burnham",
       repo: "open-whispr",
       private: false,
     });

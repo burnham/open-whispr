@@ -115,7 +115,7 @@
   },
   "publish": {
     "provider": "github",
-    "owner": "HeroTools",
+    "owner": "burnham",
     "repo": "open-whispr",
     "private": false,
     "releaseType": "draft"

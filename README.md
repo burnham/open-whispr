@@ -1,4 +1,6 @@
-# OpenWhispr
+# OpenWhispr (Burnham Edition)
+
+> **Note:** This is a fork of the original [OpenWhispr](https://github.com/HeroTools/open-whispr) by HeroTools. It includes additional features such as microphone selection and other enhancements maintained by Burnham.
 
 An open source desktop dictation application that converts speech to text using OpenAI Whisper. Features both local and cloud processing options for maximum flexibility and privacy.
 
