@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import "./index.css";
 import { useToast } from "./components/ui/Toast";
 import { LoadingDots } from "./components/ui/LoadingDots";
@@ -73,6 +74,7 @@ const Tooltip = ({ children, content, emoji }) => {
 };
 
 export default function App() {
+  const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
   const commandMenuRef = useRef(null);
@@ -172,28 +174,28 @@ export default function App() {
       case "idle":
         return {
           className: `${baseClasses} bg-black/50 cursor-pointer`,
-          tooltip: `Press [${hotkey}] to speak`,
+          tooltip: t('app.pressToSpeak').replace('{key}', hotkey),
         };
       case "hover":
         return {
           className: `${baseClasses} bg-black/50 cursor-pointer`,
-          tooltip: `Press [${hotkey}] to speak`,
+          tooltip: t('app.pressToSpeak').replace('{key}', hotkey),
         };
       case "recording":
         return {
           className: `${baseClasses} bg-blue-600 cursor-pointer`,
-          tooltip: "Recording...",
+          tooltip: t('app.recording'),
         };
       case "processing":
         return {
           className: `${baseClasses} bg-purple-600 cursor-not-allowed`,
-          tooltip: "Processing...",
+          tooltip: t('app.processing'),
         };
       default:
         return {
           className: `${baseClasses} bg-black/50 cursor-pointer`,
           style: { transform: "scale(0.8)" },
-          tooltip: "Click to speak",
+          tooltip: t('app.clickToSpeak'),
         };
     }
   };
@@ -321,7 +323,7 @@ export default function App() {
                   toggleListening();
                 }}
               >
-                {isRecording ? "Stop listening" : "Start listening"}
+                {isRecording ? t('app.stopListening') : t('app.startListening')}
               </button>
               <div className="h-px bg-white/10" />
               <button
@@ -332,7 +334,7 @@ export default function App() {
                 handleClose();
               }}
               >
-                Hide this for now
+                {t('app.hide')}
               </button>
             </div>
           )}

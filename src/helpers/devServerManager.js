@@ -51,6 +51,7 @@ class DevServerManager {
         : "http://localhost:5174/";
     } else {
       const path = require("path");
+      const { pathToFileURL } = require("url");
       const htmlPath = path.join(
         __dirname,
         "..",
@@ -59,9 +60,10 @@ class DevServerManager {
         "dist",
         "index.html"
       );
+      const fileUrl = pathToFileURL(htmlPath).href;
       const url = isControlPanel
-        ? `file://${htmlPath}?panel=true`
-        : `file://${htmlPath}`;
+        ? `${fileUrl}?panel=true`
+        : fileUrl;
       return url;
     }
   }

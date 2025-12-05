@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Trash2, Settings, FileText, Mic, X } from "lucide-react";
@@ -17,7 +18,40 @@ import {
   clearTranscriptions as clearStoreTranscriptions,
 } from "../stores/transcriptionStore";
 
+import React, { Component, ErrorInfo, ReactNode } from "react";
+
+class ErrorBoundary extends Component<{ children: ReactNode; title?: string }, { hasError: boolean; error: Error | null }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-4 m-4 bg-red-50 border border-red-200 rounded text-red-800">
+          <h3 className="font-bold mb-2">{this.props.title || "Something went wrong"}</h3>
+          <pre className="text-xs overflow-auto max-h-40 whitespace-pre-wrap">
+            {this.state.error?.toString()}
+          </pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function ControlPanel() {
+  const { t } = useTranslation();
+  // ... (rest of the existing code unchanged until return)
   const history = useTranscriptions();
   const [isLoading, setIsLoading] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -101,15 +135,15 @@ export default function ControlPanel() {
     try {
       await navigator.clipboard.writeText(text);
       toast({
-        title: "Copied!",
-        description: "Text copied to your clipboard",
+        title: t('controlPanel.copied'),
+        description: t('controlPanel.copied'),
         variant: "success",
         duration: 2000,
       });
     } catch (err) {
       toast({
-        title: "Copy Failed",
-        description: "Failed to copy text to clipboard",
+        title: t('controlPanel.copyFailed'),
+        description: t('controlPanel.copyFailed'),
         variant: "destructive",
       });
     }
@@ -117,21 +151,20 @@ export default function ControlPanel() {
 
   const clearHistory = async () => {
     showConfirmDialog({
-      title: "Clear History",
-      description:
-        "Are you certain you wish to clear all inscribed records? This action cannot be undone.",
+      title: t('dialogs.clearHistoryTitle'),
+      description: t('dialogs.clearHistoryDesc'),
       onConfirm: async () => {
         try {
           const result = await window.electronAPI.clearTranscriptions();
           clearStoreTranscriptions();
           showAlertDialog({
-            title: "History Cleared",
-            description: `Successfully cleared ${result.cleared} transcriptions from your chronicles.`,
+            title: t('common.success'),
+            description: `Successfully cleared ${result.cleared} transcriptions.`,
           });
         } catch (error) {
           showAlertDialog({
-            title: "Error",
-            description: "Failed to clear history. Please try again.",
+            title: t('common.error'),
+            description: "Failed to clear history.",
           });
         }
       },
@@ -141,9 +174,8 @@ export default function ControlPanel() {
 
   const deleteTranscription = async (id: number) => {
     showConfirmDialog({
-      title: "Delete Transcription",
-      description:
-        "Are you certain you wish to remove this inscription from your records?",
+      title: t('dialogs.deleteTranscriptionTitle'),
+      description: t('dialogs.deleteTranscriptionDesc'),
       onConfirm: async () => {
         try {
           const result = await window.electronAPI.deleteTranscription(id);
@@ -151,15 +183,15 @@ export default function ControlPanel() {
             removeFromStore(id);
           } else {
             showAlertDialog({
-              title: "Delete Failed",
+              title: t('common.error'),
               description:
-                "Failed to delete transcription. It may have already been removed.",
+                "Failed to delete.",
             });
           }
         } catch (error) {
           showAlertDialog({
-            title: "Delete Failed",
-            description: "Failed to delete transcription. Please try again.",
+            title: t('common.error'),
+            description: "Failed to delete.",
           });
         }
       },
@@ -222,17 +254,20 @@ export default function ControlPanel() {
         }
       />
 
-      <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
+      <ErrorBoundary title="Settings Error">
+        <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
+      </ErrorBoundary>
 
       {/* Main content */}
       <div className="p-6">
+
         <div className="space-y-6 max-w-4xl mx-auto">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <FileText size={18} className="text-indigo-600" />
-                  Recent Transcriptions
+                  {t('controlPanel.recentTranscriptions')}
                 </CardTitle>
                 <div className="flex gap-2">
                   {history.length > 0 && (
@@ -254,7 +289,7 @@ export default function ControlPanel() {
                   <div className="w-8 h-8 mx-auto mb-3 bg-indigo-600 rounded-lg flex items-center justify-center">
                     <span className="text-white text-sm">📝</span>
                   </div>
-                  <p className="text-neutral-600">Loading transcriptions...</p>
+                  <p className="text-neutral-600">{t('controlPanel.loading')}</p>
                 </div>
               ) : history.length === 0 ? (
                 <div className="text-center py-12">
@@ -262,34 +297,25 @@ export default function ControlPanel() {
                     <Mic className="w-8 h-8 text-neutral-400" />
                   </div>
                   <h3 className="text-lg font-medium text-neutral-900 mb-2">
-                    No transcriptions yet
+                    {t('controlPanel.noTranscriptions')}
                   </h3>
                   <p className="text-neutral-600 mb-4 max-w-sm mx-auto">
-                    Press your hotkey to start recording and create your first
-                    transcription.
+                    {t('controlPanel.pressHotkey')}
                   </p>
                   <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 max-w-md mx-auto">
                     <h4 className="font-medium text-neutral-800 mb-2">
-                      Quick Start:
+                      {t('controlPanel.quickStart')}
                     </h4>
                     <ol className="text-sm text-neutral-600 text-left space-y-1">
-                      <li>1. Click in any text field</li>
+                      <li>1. {t('controlPanel.step1')}</li>
                       <li>
-                        2. Press{" "}
-                        <kbd className="bg-white px-2 py-1 rounded text-xs font-mono border border-neutral-300">
-                          {hotkey}
-                        </kbd>{" "}
-                        to start recording
+                        2. {t('controlPanel.step2').replace('{key}', hotkey)}
                       </li>
-                      <li>3. Speak your text</li>
+                      <li>3. {t('controlPanel.step3')}</li>
                       <li>
-                        4. Press{" "}
-                        <kbd className="bg-white px-2 py-1 rounded text-xs font-mono border border-neutral-300">
-                          {hotkey}
-                        </kbd>{" "}
-                        again to stop
+                        4. {t('controlPanel.step4').replace('{key}', hotkey)}
                       </li>
-                      <li>5. Your text will appear automatically!</li>
+                      <li>5. {t('controlPanel.step5')}</li>
                     </ol>
                   </div>
                 </div>

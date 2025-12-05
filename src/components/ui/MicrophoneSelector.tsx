@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Mic } from "lucide-react";
 import {
     Select,
@@ -24,6 +25,7 @@ export default function MicrophoneSelector({
     onMicrophoneSelect,
     className = "",
 }: MicrophoneSelectorProps) {
+    const { t } = useTranslation();
     const [devices, setDevices] = useState<AudioDevice[]>([]);
     const [permissionGranted, setPermissionGranted] = useState(false);
 
@@ -74,7 +76,7 @@ export default function MicrophoneSelector({
         <div className={`space-y-2 ${className}`}>
             <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                 <Mic className="w-4 h-4" />
-                Microphone
+                {t('settings.transcription.microphone')}
             </label>
             <Select
                 value={selectedMicrophone}
@@ -82,10 +84,10 @@ export default function MicrophoneSelector({
                 disabled={!permissionGranted && devices.length === 0}
             >
                 <SelectTrigger className="w-full bg-white">
-                    <SelectValue placeholder="Select a microphone" />
+                    <SelectValue placeholder={t('settings.transcription.microphoneSelect')} />
                 </SelectTrigger>
                 <SelectContent className="bg-white z-[200]">
-                    <SelectItem value="default">Default System Microphone</SelectItem>
+                    <SelectItem value="default">{t('settings.transcription.defaultMic')}</SelectItem>
                     {devices.map((device) => (
                         <SelectItem key={device.deviceId} value={device.deviceId}>
                             {device.label}
@@ -95,7 +97,7 @@ export default function MicrophoneSelector({
             </Select>
             {!permissionGranted && devices.length === 0 && (
                 <p className="text-xs text-amber-600">
-                    Microphone access is needed to list devices.
+                    {t('settings.transcription.micAccessNeeded')}
                 </p>
             )}
         </div>

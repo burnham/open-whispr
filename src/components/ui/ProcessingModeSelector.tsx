@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Cloud, Lock } from "lucide-react";
 
 interface ProcessingModeSelectorProps {
@@ -12,6 +13,8 @@ export default function ProcessingModeSelector({
   setUseLocalWhisper,
   className = "",
 }: ProcessingModeSelectorProps) {
+  const { t } = useTranslation();
+
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 gap-3 ${className}`}>
       <button
@@ -25,10 +28,10 @@ export default function ProcessingModeSelector({
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
             <Cloud className="w-6 h-6 text-blue-600" />
-            <h4 className="font-medium text-neutral-900">Cloud Processing</h4>
+            <h4 className="font-medium text-neutral-900">{t('settings.transcription.cloudWhisper')}</h4>
           </div>
           <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
-            Fastest
+            {t('settings.transcription.cloudWhisperDesc')}
           </span>
         </div>
         <p className="text-sm text-neutral-600">
@@ -47,10 +50,10 @@ export default function ProcessingModeSelector({
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
             <Lock className="w-6 h-6 text-blue-600" />
-            <h4 className="font-medium text-neutral-900">Local Processing</h4>
+            <h4 className="font-medium text-neutral-900">{t('settings.transcription.localWhisper')}</h4>
           </div>
           <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-            Private
+            {t('settings.transcription.localWhisperDesc')}
           </span>
         </div>
         <p className="text-sm text-neutral-600">

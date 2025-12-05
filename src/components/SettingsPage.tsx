@@ -22,6 +22,7 @@ import { API_ENDPOINTS } from "../config/constants";
 import AIModelSelectorEnhanced from "./AIModelSelectorEnhanced";
 import MicrophoneSelector from "./ui/MicrophoneSelector";
 import type { UpdateInfoResult } from "../types/electron";
+import HotkeyRecorder from "./ui/HotkeyRecorder";
 const InteractiveKeyboard = React.lazy(() => import("./ui/Keyboard"));
 
 export type SettingsSectionType =
@@ -523,24 +524,24 @@ export default function SettingsPage({
               <div className="flex items-center justify-between p-4 bg-neutral-50 rounded-lg">
                 <div>
                   <p className="text-sm font-medium text-neutral-800">
-                    Current Version
+                    {t('settings.general.currentVersion')}
                   </p>
                   <p className="text-xs text-neutral-600">
-                    {currentVersion || "Loading..."}
+                    {currentVersion || t('common.loading')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   {updateStatus.isDevelopment ? (
                     <span className="text-xs text-amber-600 bg-amber-100 px-2 py-1 rounded-full">
-                      Development Mode
+                      {t('settings.general.developmentMode')}
                     </span>
                   ) : updateStatus.updateAvailable ? (
                     <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                      Update Available
+                      {t('settings.general.updateAvailable')}
                     </span>
                   ) : (
                     <span className="text-xs text-neutral-600 bg-neutral-100 px-2 py-1 rounded-full">
-                      Up to Date
+                      {t('settings.general.upToDate')}
                     </span>
                   )}
                 </div>
@@ -564,20 +565,20 @@ export default function SettingsPage({
                           updateDownloaded: false,
                         }));
                         showAlertDialog({
-                          title: "Update Available",
-                          description: `Update available: v${result.version || 'new version'}`,
+                          title: t('settings.general.updateAvailable'),
+                          description: `${t('settings.general.updateAvailable')}: v${result.version || 'new version'}`,
                         });
                       } else {
                         showAlertDialog({
-                          title: "No Updates",
+                          title: t('settings.general.upToDate'),
                           description:
-                            result?.message || "No updates available",
+                            result?.message || t('settings.general.upToDate'),
                         });
                       }
                     } catch (error: any) {
                       showAlertDialog({
-                        title: "Update Check Failed",
-                        description: `Error checking for updates: ${error.message}`,
+                        title: t('common.error'),
+                        description: `Error: ${error.message}`,
                       });
                     } finally {
                       setCheckingForUpdates(false);
@@ -589,12 +590,12 @@ export default function SettingsPage({
                   {checkingForUpdates ? (
                     <>
                       <RefreshCw size={16} className="animate-spin mr-2" />
-                      Checking for Updates...
+                      {t('settings.general.checkForUpdates')}...
                     </>
                   ) : (
                     <>
                       <RefreshCw size={16} className="mr-2" />
-                      Check for Updates
+                      {t('settings.general.checkForUpdates')}
                     </>
                   )}
                 </Button>
@@ -610,8 +611,8 @@ export default function SettingsPage({
                         } catch (error: any) {
                           setDownloadingUpdate(false);
                           showAlertDialog({
-                            title: "Download Failed",
-                            description: `Failed to download update: ${error.message}`,
+                            title: t('common.error'),
+                            description: `Failed: ${error.message}`,
                           });
                         }
                       }}
@@ -621,12 +622,12 @@ export default function SettingsPage({
                       {downloadingUpdate ? (
                         <>
                           <Download size={16} className="animate-pulse mr-2" />
-                          Downloading... {Math.round(updateDownloadProgress)}%
+                          {t('settings.general.downloadUpdate')}... {Math.round(updateDownloadProgress)}%
                         </>
                       ) : (
                         <>
                           <Download size={16} className="mr-2" />
-                          Download Update{updateInfo.version ? ` v${updateInfo.version}` : ''}
+                          {t('settings.general.downloadUpdate')}{updateInfo.version ? ` v${updateInfo.version}` : ''}
                         </>
                       )}
                     </Button>
@@ -651,9 +652,9 @@ export default function SettingsPage({
                   <Button
                     onClick={() => {
                       showConfirmDialog({
-                        title: "Install Update",
-                        description: `Ready to install update${updateInfo.version ? ` v${updateInfo.version}` : ''}. The app will restart to complete installation.`,
-                        confirmText: "Install & Restart",
+                        title: t('settings.general.installRestart'),
+                        description: t('settings.general.installRestart'),
+                        confirmText: t('settings.general.installRestart'),
                         onConfirm: async () => {
                           try {
                             setInstallInitiated(true);
@@ -661,24 +662,24 @@ export default function SettingsPage({
                             if (!result?.success) {
                               setInstallInitiated(false);
                               showAlertDialog({
-                                title: "Install Failed",
+                                title: t('common.error'),
                                 description:
                                   result?.message ||
-                                  "Failed to start the installer. Please try again.",
+                                  "Failed to start.",
                               });
                               return;
                             }
 
                             showAlertDialog({
-                              title: "Installing Update",
+                              title: t('settings.general.installRestart'),
                               description:
-                                "OpenWhispr will restart automatically to finish installing the newest version.",
+                                "Restarting...",
                             });
                           } catch (error: any) {
                             setInstallInitiated(false);
                             showAlertDialog({
-                              title: "Install Failed",
-                              description: `Failed to install update: ${error.message}`,
+                              title: t('common.error'),
+                              description: `Failed: ${error.message}`,
                             });
                           }
                         },
@@ -690,12 +691,12 @@ export default function SettingsPage({
                     {installInitiated ? (
                       <>
                         <RefreshCw size={16} className="animate-spin mr-2" />
-                        Restarting to Finish Update...
+                        {t('settings.general.installRestart')}...
                       </>
                     ) : (
                       <>
                         <span className="mr-2">🚀</span>
-                        Quit & Install Update
+                        {t('settings.general.installRestart')}
                       </>
                     )}
                   </Button>
@@ -708,12 +709,12 @@ export default function SettingsPage({
                     </h4>
                     {updateInfo.releaseDate && (
                       <p className="text-sm text-blue-700 mb-2">
-                        Released: {new Date(updateInfo.releaseDate).toLocaleDateString()}
+                        {t('settings.general.released')} {new Date(updateInfo.releaseDate).toLocaleDateString()}
                       </p>
                     )}
                     {updateInfo.releaseNotes && (
                       <div className="text-sm text-blue-800">
-                        <p className="font-medium mb-1">What's New:</p>
+                        <p className="font-medium mb-1">{t('settings.general.whatsNew')}</p>
                         <div className="whitespace-pre-wrap">{updateInfo.releaseNotes}</div>
                       </div>
                     )}
@@ -726,10 +727,10 @@ export default function SettingsPage({
             <div className="border-t pt-8">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Dictation Hotkey
+                  {t('settings.general.dictationHotkey')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
-                  Configure the key you press to start and stop voice dictation.
+                  {t('settings.general.dictationHotkeyDesc')}
                 </p>
               </div>
               <div className="space-y-4">
@@ -739,7 +740,7 @@ export default function SettingsPage({
                     onChange={setDictationKey}
                   />
                   <p className="text-xs text-gray-500 mt-2 text-center">
-                    Click to record. Press any key combination (e.g., Ctrl + Space) to set it as your dictation hotkey.
+                    {t('settings.general.clickToRecord')}
                   </p>
                 </div>
                 <Button
@@ -747,7 +748,7 @@ export default function SettingsPage({
                   disabled={!dictationKey.trim()}
                   className="w-full"
                 >
-                  Save Hotkey
+                  {t('settings.general.saveHotkey')}
                 </Button>
               </div>
             </div>
@@ -756,10 +757,10 @@ export default function SettingsPage({
             <div className="border-t pt-8">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Microphone
+                  {t('settings.transcription.microphone')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
-                  Select the input device for dictation.
+                  {t('settings.transcription.microphoneSelect')}
                 </p>
               </div>
               <div className="space-y-4">
@@ -776,11 +777,10 @@ export default function SettingsPage({
             <div className="border-t pt-8">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Permissions
+                  {t('settings.general.permissions')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
-                  Test and manage app permissions for microphone and
-                  accessibility.
+                  {t('settings.general.permissionsDesc')}
                 </p>
               </div>
               <div className="space-y-3">
@@ -790,7 +790,7 @@ export default function SettingsPage({
                   className="w-full"
                 >
                   <Mic className="mr-2 h-4 w-4" />
-                  Test Microphone Permission
+                  {t('settings.general.testMic')}
                 </Button>
                 <Button
                   onClick={permissionsHook.testAccessibilityPermission}
@@ -798,7 +798,7 @@ export default function SettingsPage({
                   className="w-full"
                 >
                   <Shield className="mr-2 h-4 w-4" />
-                  Test Accessibility Permission
+                  {t('settings.general.testAccess')}
                 </Button>
                 <Button
                   onClick={resetAccessibilityPermissions}
@@ -806,7 +806,7 @@ export default function SettingsPage({
                   className="w-full"
                 >
                   <span className="mr-2">⚙️</span>
-                  Fix Permission Issues
+                  {t('settings.general.fixPermissions')}
                 </Button>
               </div>
             </div>
@@ -815,12 +815,10 @@ export default function SettingsPage({
             <div className="border-t pt-8">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  About OpenWhispr
+                  {t('settings.general.about')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
-                  OpenWhispr converts your speech to text using AI. Press your
-                  hotkey, speak, and we'll type what you said wherever your
-                  cursor is.
+                  {t('settings.general.aboutDesc')}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-6">
@@ -829,7 +827,7 @@ export default function SettingsPage({
                     <Keyboard className="w-4 h-4 text-white" />
                   </div>
                   <p className="font-medium text-gray-800 mb-1">
-                    Default Hotkey
+                    {t('settings.general.dictationHotkey')}
                   </p>
                   <p className="text-gray-600 font-mono text-xs">
                     {formatHotkeyLabel(dictationKey)}
@@ -839,7 +837,7 @@ export default function SettingsPage({
                   <div className="w-8 h-8 mx-auto mb-2 bg-emerald-600 rounded-lg flex items-center justify-center">
                     <span className="text-white text-sm">🏷️</span>
                   </div>
-                  <p className="font-medium text-gray-800 mb-1">Version</p>
+                  <p className="font-medium text-gray-800 mb-1">{t('settings.general.currentVersion')}</p>
                   <p className="text-gray-600 text-xs">
                     {currentVersion || "0.1.0"}
                   </p>
@@ -848,8 +846,8 @@ export default function SettingsPage({
                   <div className="w-8 h-8 mx-auto mb-2 bg-green-600 rounded-lg flex items-center justify-center">
                     <span className="text-white text-sm">✓</span>
                   </div>
-                  <p className="font-medium text-gray-800 mb-1">Status</p>
-                  <p className="text-green-600 text-xs font-medium">Active</p>
+                  <p className="font-medium text-gray-800 mb-1">{t('settings.general.status')}</p>
+                  <p className="text-green-600 text-xs font-medium">{t('settings.general.active')}</p>
                 </div>
               </div>
 
@@ -858,9 +856,8 @@ export default function SettingsPage({
                 <Button
                   onClick={() => {
                     showConfirmDialog({
-                      title: "Reset Onboarding",
-                      description:
-                        "Are you sure you want to reset the onboarding process? This will clear your setup and show the welcome flow again.",
+                      title: t('dialogs.resetOnboardingTitle'),
+                      description: t('dialogs.resetOnboardingDesc'),
                       onConfirm: () => {
                         localStorage.removeItem("onboardingCompleted");
                         window.location.reload();
@@ -872,22 +869,21 @@ export default function SettingsPage({
                   className="w-full text-amber-600 border-amber-300 hover:bg-amber-50 hover:border-amber-400"
                 >
                   <span className="mr-2">🔄</span>
-                  Reset Onboarding
+                  {t('settings.general.resetOnboarding')}
                 </Button>
                 <Button
                   onClick={() => {
                     showConfirmDialog({
-                      title: "⚠️ DANGER: Cleanup App Data",
-                      description:
-                        "This will permanently delete ALL OpenWhispr data including:\n\n• Database and transcriptions\n• Local storage settings\n• Downloaded Whisper models\n• Environment files\n\nYou will need to manually remove app permissions in System Settings.\n\nThis action cannot be undone. Are you sure?",
+                      title: t('dialogs.cleanDataTitle'),
+                      description: t('dialogs.cleanDataDesc'),
                       onConfirm: () => {
                         window.electronAPI
                           ?.cleanupApp()
                           .then(() => {
                             showAlertDialog({
-                              title: "Cleanup Completed",
+                              title: t('common.success'),
                               description:
-                                "✅ Cleanup completed! All app data has been removed.",
+                                "Cleanup completed!",
                             });
                             setTimeout(() => {
                               window.location.reload();
@@ -895,8 +891,8 @@ export default function SettingsPage({
                           })
                           .catch((error) => {
                             showAlertDialog({
-                              title: "Cleanup Failed",
-                              description: `❌ Cleanup failed: ${error.message}`,
+                              title: t('common.error'),
+                              description: `Failed: ${error.message}`,
                             });
                           });
                       },
@@ -907,14 +903,14 @@ export default function SettingsPage({
                   className="w-full text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
                 >
                   <span className="mr-2">🗑️</span>
-                  Clean Up All App Data
+                  {t('settings.general.cleanAppData')}
                 </Button>
               </div>
 
               <div className="space-y-3 mt-6 p-4 bg-rose-50 border border-rose-200 rounded-xl">
-                <h4 className="font-medium text-rose-900">Local Model Storage</h4>
+                <h4 className="font-medium text-rose-900">{t('settings.general.localModelStorage')}</h4>
                 <p className="text-sm text-rose-800">
-                  Remove all downloaded Whisper models from your cache directory to reclaim disk space. You can re-download any model later.
+                  {t('settings.general.removeModelsDesc')}
                 </p>
                 <Button
                   variant="destructive"
@@ -922,10 +918,10 @@ export default function SettingsPage({
                   disabled={isRemovingModels}
                   className="w-full"
                 >
-                  {isRemovingModels ? "Removing models..." : "Remove Downloaded Models"}
+                  {isRemovingModels ? t('common.loading') : t('settings.general.removeModels')}
                 </Button>
                 <p className="text-xs text-rose-700">
-                  Current cache location: <code>{cachePathHint}</code>
+                  {t('settings.general.currentCacheLocation')}: <code>{cachePathHint}</code>
                 </p>
               </div>
             </div>
@@ -937,7 +933,7 @@ export default function SettingsPage({
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Speech to Text Processing
+                {t('settings.transcription.speechToText')}
               </h3>
               <ProcessingModeSelector
                 useLocalWhisper={useLocalWhisper}
@@ -952,7 +948,7 @@ export default function SettingsPage({
 
             {!useLocalWhisper && (
               <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                <h4 className="font-medium text-blue-900">OpenAI-Compatible Cloud Setup</h4>
+                <h4 className="font-medium text-blue-900">{t('settings.transcription.openAiSetup')}</h4>
                 <ApiKeyInput
                   apiKey={openaiApiKey}
                   setApiKey={setOpenaiApiKey}
@@ -973,7 +969,7 @@ export default function SettingsPage({
                 />
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-blue-900">
-                    Custom Base URL (optional)
+                    {t('settings.transcription.customBaseUrl')}
                   </label>
                   <Input
                     value={cloudTranscriptionBaseUrl}
@@ -988,11 +984,11 @@ export default function SettingsPage({
                       size="sm"
                       onClick={() => setCloudTranscriptionBaseUrl(API_ENDPOINTS.TRANSCRIPTION_BASE)}
                     >
-                      Reset to Default
+                      {t('settings.transcription.resetDefault')}
                     </Button>
                   </div>
                   <p className="text-xs text-blue-800">
-                    Requests for cloud transcription use this OpenAI-compatible base URL. Leave empty to fall back to
+                    {t('settings.transcription.cloudNote')}
                     <code className="ml-1">{API_ENDPOINTS.TRANSCRIPTION_BASE}</code>.
                   </p>
                 </div>
@@ -1002,7 +998,7 @@ export default function SettingsPage({
             {useLocalWhisper && whisperHook.whisperInstalled && (
               <div className="space-y-4 p-4 bg-purple-50 border border-purple-200 rounded-xl">
                 <h4 className="font-medium text-purple-900">
-                  Local Whisper Model
+                  {t('settings.transcription.localModel')}
                 </h4>
                 <WhisperModelPicker
                   selectedModel={whisperModel}
@@ -1013,7 +1009,7 @@ export default function SettingsPage({
             )}
 
             <div className="space-y-4 p-4 bg-gray-50 border border-gray-200 rounded-xl">
-              <h4 className="font-medium text-gray-900">Preferred Language</h4>
+              <h4 className="font-medium text-gray-900">{t('settings.transcription.language')}</h4>
               <LanguageSelector
                 value={preferredLanguage}
                 onChange={(value) => {
@@ -1051,13 +1047,13 @@ export default function SettingsPage({
                 }
 
                 showAlertDialog({
-                  title: "Settings Saved",
+                  title: t('common.save'),
                   description: descriptionParts.join(' '),
                 });
               }}
               className="w-full"
             >
-              Save Transcription Settings
+              {t('settings.transcription.saveSettings')}
             </Button>
           </div>
         );
@@ -1067,12 +1063,10 @@ export default function SettingsPage({
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                AI Text Enhancement
+                {t('settings.aiModels.enhancement')}
               </h3>
               <p className="text-sm text-gray-600 mb-6">
-                Configure how AI models clean up and format your transcriptions.
-                This handles commands like "scratch that", creates proper lists,
-                and fixes obvious errors while preserving your natural tone.
+                {t('settings.aiModels.enhancementDesc')}
               </p>
             </div>
 
@@ -1099,7 +1093,7 @@ export default function SettingsPage({
             />
 
             <Button onClick={saveReasoningSettings} className="w-full">
-              Save AI Model Settings
+              {t('settings.aiModels.saveSettings')}
             </Button>
           </div>
         );
@@ -1109,43 +1103,35 @@ export default function SettingsPage({
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Agent Configuration
+                {t('settings.agentConfig.agentName')}
               </h3>
               <p className="text-sm text-gray-600 mb-6">
-                Customize your AI assistant's name and behavior to make
-                interactions more personal and effective.
+                {t('settings.agentConfig.agentNameDesc')}
               </p>
             </div>
 
             <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-xl">
               <h4 className="font-medium text-purple-900 mb-3">
-                💡 How to use agent names:
+                💡 {t('settings.agentConfig.howToUse')}
               </h4>
               <ul className="text-sm text-purple-800 space-y-2">
                 <li>
-                  • Say "Hey {agentName}, write a formal email" for specific
-                  instructions
+                  • {t('settings.agentConfig.tip1').replace('{name}', agentName || 'Agent')}
                 </li>
                 <li>
-                  • Use "Hey {agentName}, format this as a list" for text
-                  enhancement commands
+                  • {t('settings.agentConfig.tip2').replace('{name}', agentName || 'Agent')}
                 </li>
                 <li>
-                  • The agent will recognize when you're addressing it directly
-                  vs. dictating content
-                </li>
-                <li>
-                  • Makes conversations feel more natural and helps distinguish
-                  commands from dictation
+                  • {t('settings.agentConfig.tip3')}
                 </li>
               </ul>
             </div>
 
             <div className="space-y-4 p-4 bg-gray-50 border border-gray-200 rounded-xl">
-              <h4 className="font-medium text-gray-900">Current Agent Name</h4>
+              <h4 className="font-medium text-gray-900">{t('settings.agentConfig.currentName')}</h4>
               <div className="flex gap-3">
                 <Input
-                  placeholder="e.g., Assistant, Jarvis, Alex..."
+                  placeholder={t('settings.agentConfig.placeholder')}
                   value={agentName}
                   onChange={(e) => setAgentName(e.target.value)}
                   className="flex-1 text-center text-lg font-mono"
@@ -1154,37 +1140,33 @@ export default function SettingsPage({
                   onClick={() => {
                     setAgentName(agentName.trim());
                     showAlertDialog({
-                      title: "Agent Name Updated",
-                      description: `Your agent is now named "${agentName.trim()}". You can address it by saying "Hey ${agentName.trim()}" followed by your instructions.`,
+                      title: t('common.success'),
+                      description: `Your agent is now named "${agentName.trim()}".`,
                     });
                   }}
                   disabled={!agentName.trim()}
                 >
-                  Save
+                  {t('settings.agentConfig.save')}
                 </Button>
               </div>
               <p className="text-xs text-gray-600 mt-2">
-                Choose a name that feels natural to say and remember
+                {t('settings.agentConfig.nameHint')}
               </p>
             </div>
 
             <div className="bg-blue-50 p-4 rounded-lg">
               <h4 className="font-medium text-blue-900 mb-2">
-                🎯 Example Usage:
+                🎯 {t('settings.agentConfig.exampleUsage')}
               </h4>
               <div className="text-sm text-blue-800 space-y-1">
                 <p>
-                  • "Hey {agentName}, write an email to my team about the
-                  meeting"
+                  • {t('settings.agentConfig.ex1').replace('{name}', agentName || 'Agent')}
                 </p>
                 <p>
-                  • "Hey {agentName}, make this more professional" (after
-                  dictating text)
+                  • {t('settings.agentConfig.ex2').replace('{name}', agentName || 'Agent')}
                 </p>
-                <p>• "Hey {agentName}, convert this to bullet points"</p>
                 <p>
-                  • Regular dictation: "This is just normal text" (no agent name
-                  needed)
+                  • {t('settings.agentConfig.ex3')}
                 </p>
               </div>
             </div>
@@ -1192,19 +1174,17 @@ export default function SettingsPage({
         );
 
 
-      case "prompts":
-        return (
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                AI Prompt Management
-              </h3>
-              <p className="text-sm text-gray-600 mb-6">
-                View and customize the prompts that power OpenWhispr's AI text processing.
-                Adjust these to change how your transcriptions are formatted and enhanced.
-              </p>
-            </div>
-
+            case "prompts":
+              return (
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {t('settings.prompts.title')}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-6">
+                      {t('settings.prompts.desc')}
+                    </p>
+                  </div>
             <PromptStudio />
           </div>
         );

@@ -33,7 +33,7 @@ export function LanguageSwitcher() {
         {t('settings.general.interfaceLanguageDesc')}
       </p>
       <Select
-        value={i18n.language?.split('-')[0] || 'en'}
+        value={i18n?.language ? i18n.language.split('-')[0] : 'en'}
         onValueChange={changeLanguage}
       >
         <SelectTrigger className="w-full bg-white">

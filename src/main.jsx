@@ -20,24 +20,28 @@ function AppRouter() {
   const isDictationPanel = !isControlPanel;
 
   useEffect(() => {
-    // Check if onboarding has been completed
-    const onboardingCompleted =
-      localStorage.getItem("onboardingCompleted") === "true";
-    const currentStep = parseInt(
-      localStorage.getItem("onboardingCurrentStep") || "0"
-    );
+    try {
+      // Check if onboarding has been completed
+      const onboardingCompleted =
+        localStorage.getItem("onboardingCompleted") === "true";
+      const currentStep = parseInt(
+        localStorage.getItem("onboardingCurrentStep") || "0"
+      );
 
-    if (isControlPanel && !onboardingCompleted) {
-      // Show onboarding for control panel if not completed
-      setShowOnboarding(true);
+      if (isControlPanel && !onboardingCompleted) {
+        // Show onboarding for control panel if not completed
+        setShowOnboarding(true);
+      }
+
+      // Hide dictation panel window unless onboarding is complete or we're past the permissions step
+      if (isDictationPanel && !onboardingCompleted && currentStep < 4) {
+        window.electronAPI?.hideWindow?.();
+      }
+    } catch (e) {
+      console.error("Error in AppRouter effect:", e);
+    } finally {
+      setIsLoading(false);
     }
-
-    // Hide dictation panel window unless onboarding is complete or we're past the permissions step
-    if (isDictationPanel && !onboardingCompleted && currentStep < 4) {
-      window.electronAPI?.hideWindow?.();
-    }
-
-    setIsLoading(false);
   }, [isControlPanel, isDictationPanel]);
 
   const handleOnboardingComplete = () => {
@@ -47,7 +51,7 @@ function AppRouter() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading OpenWhispr...</p>
@@ -66,7 +70,9 @@ function AppRouter() {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ToastProvider>
-      <AppRouter />
+      <React.Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+        <AppRouter />
+      </React.Suspense>
     </ToastProvider>
   </React.StrictMode>
 );
