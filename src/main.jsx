@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
+import "./i18n"; // Initialize i18next
 import App from "./App.jsx";
 import ControlPanel from "./components/ControlPanel.tsx";
 import OnboardingFlow from "./components/OnboardingFlow.tsx";

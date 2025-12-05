@@ -1,0 +1,61 @@
+{
+  "settings": {
+    "general": {
+      "title": "General",
+      "appUpdates": "App Updates",
+      "appUpdatesDesc": "Keep OpenWhispr up to date with the latest features and improvements.",
+      "currentVersion": "Current Version",
+      "checkForUpdates": "Check for Updates",
+      "updateAvailable": "Update Available",
+      "upToDate": "Up to Date",
+      "dictationHotkey": "Dictation Hotkey",
+      "dictationHotkeyDesc": "Configure the key you press to start and stop voice dictation.",
+      "activationKey": "Activation Key",
+      "pressKeyDesc": "Press this key from anywhere to start/stop dictation",
+      "saveHotkey": "Save Hotkey",
+      "permissions": "Permissions",
+      "permissionsDesc": "Test and manage app permissions for microphone and accessibility.",
+      "testMic": "Test Microphone Permission",
+      "testAccess": "Test Accessibility Permission",
+      "fixPermissions": "Fix Permission Issues",
+      "about": "About OpenWhispr",
+      "aboutDesc": "OpenWhispr converts your speech to text using AI.",
+      "resetOnboarding": "Reset Onboarding",
+      "cleanAppData": "Clean Up All App Data",
+      "interfaceLanguage": "Interface Language",
+      "interfaceLanguageDesc": "Select your preferred language for the application interface."
+    },
+    "transcription": {
+      "title": "Transcription",
+      "speechToText": "Speech to Text Processing",
+      "microphone": "Microphone",
+      "microphoneSelect": "Select a microphone",
+      "defaultMic": "Default System Microphone",
+      "micAccessNeeded": "Microphone access is needed to list devices.",
+      "processingMode": "Processing Mode",
+      "localWhisper": "Local Whisper",
+      "cloudWhisper": "Cloud Whisper",
+      "language": "Transcription Language",
+      "saveSettings": "Save Transcription Settings"
+    },
+    "aiModels": {
+      "title": "AI Models",
+      "enhancement": "AI Text Enhancement",
+      "enhancementDesc": "Configure how AI models clean up and format your transcriptions.",
+      "saveSettings": "Save AI Model Settings"
+    },
+    "agentConfig": {
+      "title": "Agent Config",
+      "agentName": "Agent Name",
+      "agentNameDesc": "Customize your AI assistant's name and behavior.",
+      "save": "Save"
+    }
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+}

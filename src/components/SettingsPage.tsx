@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { RefreshCw, Download, Keyboard, Mic, Shield } from "lucide-react";
@@ -15,12 +16,12 @@ import { useClipboard } from "../hooks/useClipboard";
 import { REASONING_PROVIDERS } from "../utils/languages";
 import { formatHotkeyLabel } from "../utils/hotkeys";
 import LanguageSelector from "./ui/LanguageSelector";
+import { LanguageSwitcher } from "./ui/LanguageSwitcher";
 import PromptStudio from "./ui/PromptStudio";
 import { API_ENDPOINTS } from "../config/constants";
 import AIModelSelectorEnhanced from "./AIModelSelectorEnhanced";
-import type { UpdateInfoResult } from "../types/electron";
 import MicrophoneSelector from "./ui/MicrophoneSelector";
-import HotkeyRecorder from "./ui/HotkeyRecorder";
+import type { UpdateInfoResult } from "../types/electron";
 const InteractiveKeyboard = React.lazy(() => import("./ui/Keyboard"));
 
 export type SettingsSectionType =
@@ -37,6 +38,7 @@ interface SettingsPageProps {
 export default function SettingsPage({
   activeSection = "general",
 }: SettingsPageProps) {
+  const { t } = useTranslation();
   // Use custom hooks
   const {
     confirmDialog,
@@ -498,15 +500,24 @@ export default function SettingsPage({
       case "general":
         return (
           <div className="space-y-8">
+             {/* Language Section */}
+             <div className="border-b pb-8">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {t('settings.general.title')}
+                </h3>
+              </div>
+              <LanguageSwitcher />
+            </div>
+
             {/* App Updates Section */}
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  App Updates
+                  {t('settings.general.appUpdates')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  Keep OpenWhispr up to date with the latest features and
-                  improvements.
+                  {t('settings.general.appUpdatesDesc')}
                 </p>
               </div>
               <div className="flex items-center justify-between p-4 bg-neutral-50 rounded-lg">

@@ -1,0 +1,61 @@
+{
+  "settings": {
+    "general": {
+      "title": "Allgemein",
+      "appUpdates": "App-Updates",
+      "appUpdatesDesc": "Halten Sie OpenWhispr mit den neuesten Funktionen und Verbesserungen auf dem neuesten Stand.",
+      "currentVersion": "Aktuelle Version",
+      "checkForUpdates": "Nach Updates suchen",
+      "updateAvailable": "Update verfügbar",
+      "upToDate": "Auf dem neuesten Stand",
+      "dictationHotkey": "Diktier-Hotkey",
+      "dictationHotkeyDesc": "Konfigurieren Sie die Taste, mit der Sie das Diktieren starten und stoppen.",
+      "activationKey": "Aktivierungstaste",
+      "pressKeyDesc": "Drücken Sie diese Taste von überall, um das Diktieren zu starten/stoppen",
+      "saveHotkey": "Hotkey speichern",
+      "permissions": "Berechtigungen",
+      "permissionsDesc": "Testen und verwalten Sie App-Berechtigungen für Mikrofon und Barrierefreiheit.",
+      "testMic": "Mikrofonberechtigung testen",
+      "testAccess": "Zugriffsberechtigung testen",
+      "fixPermissions": "Berechtigungsprobleme beheben",
+      "about": "Über OpenWhispr",
+      "aboutDesc": "OpenWhispr wandelt Ihre Sprache mithilfe von KI in Text um.",
+      "resetOnboarding": "Onboarding zurücksetzen",
+      "cleanAppData": "Alle App-Daten bereinigen",
+      "interfaceLanguage": "Schnittstellensprache",
+      "interfaceLanguageDesc": "Wählen Sie Ihre bevorzugte Sprache für die Anwendungsoberfläche."
+    },
+    "transcription": {
+      "title": "Transkription",
+      "speechToText": "Sprache-zu-Text-Verarbeitung",
+      "microphone": "Mikrofon",
+      "microphoneSelect": "Wählen Sie ein Mikrofon",
+      "defaultMic": "Standard-Systemmikrofon",
+      "micAccessNeeded": "Mikrofonzugriff ist erforderlich, um Geräte aufzulisten.",
+      "processingMode": "Verarbeitungsmodus",
+      "localWhisper": "Lokales Whisper",
+      "cloudWhisper": "Cloud Whisper",
+      "language": "Transkriptionssprache",
+      "saveSettings": "Transkriptionseinstellungen speichern"
+    },
+    "aiModels": {
+      "title": "KI-Modelle",
+      "enhancement": "KI-Textverbesserung",
+      "enhancementDesc": "Konfigurieren Sie, wie KI-Modelle Ihre Transkriptionen bereinigen und formatieren.",
+      "saveSettings": "KI-Modelleinstellungen speichern"
+    },
+    "agentConfig": {
+      "title": "Agenten-Konfiguration",
+      "agentName": "Agentenname",
+      "agentNameDesc": "Passen Sie Namen und Verhalten Ihres KI-Assistenten an.",
+      "save": "Speichern"
+    }
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "settings": {
+    "general": {
+      "title": "General",
+      "appUpdates": "Actualizaciones de la App",
+      "appUpdatesDesc": "Mantén OpenWhispr actualizado con las últimas funciones y mejoras.",
+      "currentVersion": "Versión Actual",
+      "checkForUpdates": "Buscar Actualizaciones",
+      "updateAvailable": "Actualización Disponible",
+      "upToDate": "Actualizado",
+      "dictationHotkey": "Atajo de Dictado",
+      "dictationHotkeyDesc": "Configura la tecla que presionas para iniciar y detener el dictado.",
+      "activationKey": "Tecla de Activación",
+      "pressKeyDesc": "Presiona esta tecla desde cualquier lugar para iniciar/detener el dictado",
+      "saveHotkey": "Guardar Atajo",
+      "permissions": "Permisos",
+      "permissionsDesc": "Prueba y gestiona los permisos de micrófono y accesibilidad de la app.",
+      "testMic": "Probar Permiso de Micrófono",
+      "testAccess": "Probar Permiso de Accesibilidad",
+      "fixPermissions": "Solucionar Problemas de Permisos",
+      "about": "Acerca de OpenWhispr",
+      "aboutDesc": "OpenWhispr convierte tu voz en texto usando IA.",
+      "resetOnboarding": "Reiniciar Configuración Inicial",
+      "cleanAppData": "Limpiar Todos los Datos de la App",
+      "interfaceLanguage": "Idioma de la Interfaz",
+      "interfaceLanguageDesc": "Selecciona tu idioma preferido para la interfaz de la aplicación."
+    },
+    "transcription": {
+      "title": "Transcripción",
+      "speechToText": "Procesamiento de Voz a Texto",
+      "microphone": "Micrófono",
+      "microphoneSelect": "Seleccionar un micrófono",
+      "defaultMic": "Micrófono Predeterminado del Sistema",
+      "micAccessNeeded": "Se necesita acceso al micrófono para listar los dispositivos.",
+      "processingMode": "Modo de Procesamiento",
+      "localWhisper": "Whisper Local",
+      "cloudWhisper": "Whisper en la Nube",
+      "language": "Idioma de Transcripción",
+      "saveSettings": "Guardar Configuración de Transcripción"
+    },
+    "aiModels": {
+      "title": "Modelos de IA",
+      "enhancement": "Mejora de Texto con IA",
+      "enhancementDesc": "Configura cómo los modelos de IA limpian y formatean tus transcripciones.",
+      "saveSettings": "Guardar Configuración de Modelos IA"
+    },
+    "agentConfig": {
+      "title": "Configuración del Agente",
+      "agentName": "Nombre del Agente",
+      "agentNameDesc": "Personaliza el nombre y comportamiento de tu asistente de IA.",
+      "save": "Guardar"
+    }
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  }
+}
