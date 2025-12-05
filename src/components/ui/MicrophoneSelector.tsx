@@ -84,7 +84,7 @@ export default function MicrophoneSelector({
                 <SelectTrigger className="w-full bg-white">
                     <SelectValue placeholder="Select a microphone" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white z-[200]">
                     <SelectItem value="default">Default System Microphone</SelectItem>
                     {devices.map((device) => (
                         <SelectItem key={device.deviceId} value={device.deviceId}>
