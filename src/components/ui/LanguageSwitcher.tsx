@@ -39,7 +39,7 @@ export function LanguageSwitcher() {
         <SelectTrigger className="w-full bg-white">
           <SelectValue placeholder="Select Language" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white z-[200]">
           {languages.map((lang) => (
             <SelectItem key={lang.code} value={lang.code}>
               {lang.label}
