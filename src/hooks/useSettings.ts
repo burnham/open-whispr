@@ -11,6 +11,7 @@ export interface TranscriptionSettings {
   fallbackWhisperModel: string;
   preferredLanguage: string;
   cloudTranscriptionBaseUrl?: string;
+  selectedMicrophone?: string;
 }
 
 export interface ReasoningSettings {
@@ -103,6 +104,16 @@ export function useSettings() {
     }
   );
 
+  // Microphone selection
+  const [selectedMicrophone, setSelectedMicrophone] = useLocalStorage(
+    "selectedMicrophone",
+    "default",
+    {
+      serialize: String,
+      deserialize: String,
+    }
+  );
+
   // Reasoning settings
   const [useReasoningModel, setUseReasoningModel] = useLocalStorage(
     "useReasoningModel",
@@ -172,6 +183,8 @@ export function useSettings() {
         setPreferredLanguage(settings.preferredLanguage);
       if (settings.cloudTranscriptionBaseUrl !== undefined)
         setCloudTranscriptionBaseUrl(settings.cloudTranscriptionBaseUrl);
+      if (settings.selectedMicrophone !== undefined)
+        setSelectedMicrophone(settings.selectedMicrophone);
     },
     [
       setUseLocalWhisper,
@@ -181,6 +194,7 @@ export function useSettings() {
       setFallbackWhisperModel,
       setPreferredLanguage,
       setCloudTranscriptionBaseUrl,
+      setSelectedMicrophone,
     ]
   );
 
@@ -224,6 +238,7 @@ export function useSettings() {
     anthropicApiKey,
     geminiApiKey,
     dictationKey,
+    selectedMicrophone,
     setUseLocalWhisper,
     setWhisperModel,
     setAllowOpenAIFallback,
@@ -247,13 +262,14 @@ export function useSettings() {
       };
       setReasoningModel(
         providerModels[provider as keyof typeof providerModels] ||
-          "gpt-4o-mini"
+        "gpt-4o-mini"
       );
     },
     setOpenaiApiKey,
     setAnthropicApiKey,
     setGeminiApiKey,
     setDictationKey,
+    setSelectedMicrophone,
     updateTranscriptionSettings,
     updateReasoningSettings,
     updateApiKeys,
