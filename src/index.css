@@ -1,50 +1,59 @@
 @import "tailwindcss";
 
 :root {
-  /* OpenWhispr Modern Theme - Clean & Professional */
-  --color-primary: #4f46e5;
+  /* OpenWhispr Elegant Theme - Turquoise, Brown, Cream */
+  --color-primary: #0CA5B0; /* Turquoise */
   --color-primary-foreground: #ffffff;
-  --color-secondary: #f5f5f5;
-  --color-secondary-foreground: #171717;
-  --color-muted: #f5f5f5;
-  --color-muted-foreground: #737373;
-  --color-accent: #f5f5f5;
-  --color-accent-foreground: #171717;
+  
+  --color-secondary: #F8F4E4; /* Beige */
+  --color-secondary-foreground: #4E3F30; /* Brown */
+  
+  --color-muted: #F8F4E4; /* Beige */
+  --color-muted-foreground: #A5B3AA; /* Grey */
+  
+  --color-accent: #4E3F30; /* Brown */
+  --color-accent-foreground: #FEFEEB; /* Cream */
+  
   --color-destructive: #dc2626;
   --color-destructive-foreground: #ffffff;
-  --color-border: #e5e5e5;
+  
+  --color-border: #A5B3AA; /* Grey */
   --color-input: #ffffff;
-  --color-ring: #4f46e5;
-  --color-background: #ffffff;
-  --color-foreground: #171717;
-  --color-card: #ffffff;
-  --color-card-foreground: #171717;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #171717;
-  --color-link: #4f46e5;
+  --color-ring: #0CA5B0;
+  
+  --color-background: #FEFEEB; /* Cream */
+  --color-foreground: #333333; /* Dark Grey for text elegance */
+  
+  --color-card: #F8F4E4; /* Beige */
+  --color-card-foreground: #333333;
+  
+  --color-popover: #F8F4E4;
+  --color-popover-foreground: #333333;
+  
+  --color-link: #0CA5B0;
   --radius: 0.5rem;
 }
 
 .dark {
-  /* Dark mode - sophisticated and rich */
+  /* Dark mode - kept as fallback/neutral for now until specific dark palette provided */
   --color-background: oklch(0.08 0 0);
   --color-foreground: oklch(0.95 0 0);
   --color-card: oklch(0.12 0 0);
   --color-card-foreground: oklch(0.95 0 0);
   --color-popover: oklch(0.12 0 0);
   --color-popover-foreground: oklch(0.95 0 0);
-  --color-primary: oklch(0.6 0.22 245);
+  --color-primary: #0CA5B0; /* Keep turquoise brand */
   --color-primary-foreground: oklch(0.985 0 0);
   --color-secondary: oklch(0.18 0 0);
   --color-secondary-foreground: oklch(0.9 0 0);
   --color-muted: oklch(0.15 0 0);
   --color-muted-foreground: oklch(0.6 0 0);
-  --color-accent: oklch(0.6 0.22 245);
+  --color-accent: #0CA5B0;
   --color-accent-foreground: oklch(0.985 0 0);
   --color-destructive: oklch(0.7 0.22 25);
   --color-border: oklch(0.22 0 0);
   --color-input: oklch(0.18 0 0);
-  --color-ring: oklch(0.6 0.22 245);
+  --color-ring: #0CA5B0;
 }
 
 @layer base {
