@@ -553,7 +553,7 @@ export default function SettingsPage({
                     try {
                       const result =
                         await window.electronAPI?.checkForUpdates();
-                      if (result?.updateAvailable) {
+                      if (result?.updateAvailable && result.version !== currentVersion) {
                         setUpdateInfo({
                           version: result.version || 'unknown',
                           releaseDate: result.releaseDate,
@@ -569,10 +569,10 @@ export default function SettingsPage({
                           description: `${t('settings.general.updateAvailable')}: v${result.version || 'new version'}`,
                         });
                       } else {
+                        // If updateAvailable is true but versions match, treat as up to date (reinstall scenario handled elsewhere if needed)
                         showAlertDialog({
                           title: t('settings.general.upToDate'),
-                          description:
-                            result?.message || t('settings.general.upToDate'),
+                          description: t('settings.general.upToDate'),
                         });
                       }
                     } catch (error: any) {
