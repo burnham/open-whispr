@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-12-06
+
+### Added
+- **Elegant UI Theme**: Redesigned application with a new color palette (Turquoise/Brown/Cream) for a more professional and warmer look.
+- **Safe Hotkeys**: Enforced a 2-key minimum (Modifier + Key) for the global dictation shortcut to prevent accidental triggers.
+
+### Fixed
+- **Internationalization (i18n)**: Completed missing translations for Settings, Sidebar, and API input fields in Spanish and German.
+- **Auto-Updater**: Resolved "No published versions" error by establishing a proper GitHub Release workflow.
+- **Updater Logic**: Clarified behavior for local development builds to prevent false error reports.
+
 ## [1.0.12] - 2025-11-13
 
 ### Added

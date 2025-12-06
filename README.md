@@ -520,7 +520,7 @@ A: OpenWhispr supports 58 languages including English, Spanish, French, German, 
 
 ## Project Status
 
-OpenWhispr is actively maintained and ready for production use. Current version: 1.0.4
+OpenWhispr is actively maintained and ready for production use. Current version: 1.2.0
 
 - ✅ Core functionality complete
 - ✅ Cross-platform support
