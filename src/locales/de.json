@@ -35,6 +35,7 @@
       "permissions": "Berechtigungen",
       "permissionsDesc": "Berechtigungen für Mikrofon und Zugänglichkeit verwalten.",
       "testMic": "Mikrofon testen",
+      "stopMicTest": "Test Beenden",
       "testAccess": "Zugriff testen",
       "fixPermissions": "Berechtigungen reparieren",
       "about": "Über OpenWhispr",
@@ -52,7 +53,14 @@
       "downloadUpdate": "Update herunterladen",
       "installRestart": "Installieren & Neustart",
       "whatsNew": "Neuheiten:",
-      "released": "Veröffentlicht:"
+      "released": "Veröffentlicht:",
+      "updateError": "Update-Fehler",
+      "updateErrorDesc": "Das Update-Programm hat ein Problem festgestellt. Bitte manuell herunterladen.",
+      "stillRunning": "Läuft noch?",
+      "manualRestartDesc": "OpenWhispr wurde nicht automatisch neu gestartet. Bitte schließen und erneut öffnen.",
+      "removeModelsError": "Modelle konnten nicht entfernt werden",
+      "removeModelsSuccess": "Modelle entfernt",
+      "removeModelsSuccessDesc": "Alle heruntergeladenen Whisper-Modelle wurden gelöscht."
     },
     "ai": {
       "title": "KI-Modelle",
@@ -70,6 +78,7 @@
       "title": "Transkription",
       "speechToText": "Spracherkennung",
       "microphone": "Mikrofon",
+      "visualizerTitle": "Mikrofon-Eingang",
       "microphoneSelect": "Mikrofon wählen",
       "defaultMic": "Systemstandard",
       "micAccessNeeded": "Mikrofonzugriff erforderlich.",
@@ -206,6 +215,10 @@
     "clearHistoryTitle": "Verlauf löschen",
     "clearHistoryDesc": "Möchten Sie wirklich alle Einträge löschen? Kann nicht rückgängig gemacht werden.",
     "deleteTranscriptionTitle": "Eintrag löschen",
-    "deleteTranscriptionDesc": "Möchten Sie diesen Eintrag wirklich entfernen?"
+    "deleteTranscriptionDesc": "Möchten Sie diesen Eintrag wirklich entfernen?",
+    "accessibilitySuccess": "✅ Zugriffstest Erfolgreich",
+    "accessibilitySuccessDesc": "Eingabehilfe-Berechtigungen funktionieren! Prüfen Sie, ob der Testtext erschienen ist.",
+    "accessibilityError": "❌ Berechtigungen Erforderlich",
+    "accessibilityErrorDesc": "Bitte gewähren Sie Eingabehilfe-Berechtigungen in den Systemeinstellungen."
   }
 }

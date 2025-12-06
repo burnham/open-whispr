@@ -36,8 +36,9 @@
       },
       "clickToRecord": "Haz clic para grabar. Presiona cualquier combinación de teclas para configurarla.",
       "permissions": "Permisos",
-      "permissionDesc": "Gestiona permisos de micrófono y accesibilidad.",
+      "permissionsDesc": "Gestiona permisos de micrófono y accesibilidad.",
       "testMic": "Probar Micrófono",
+      "stopMicTest": "Detener Prueba",
       "testAccess": "Probar Accesibilidad",
       "fixPermissions": "Arreglar Permisos",
       "about": "Sobre OpenWhispr",
@@ -55,7 +56,14 @@
       "downloadUpdate": "Descargar Actualización",
       "installRestart": "Instalar y Reiniciar",
       "whatsNew": "Novedades:",
-      "released": "Lanzado:"
+      "released": "Lanzado:",
+      "updateError": "Error de Actualización",
+      "updateErrorDesc": "El actualizador encontró un problema. Intente descargar manualmente.",
+      "stillRunning": "¿Sigue Ejecutándose?",
+      "manualRestartDesc": "OpenWhispr no se reinició automáticamente. Por favor ciérrelo y vuélvalo a abrir.",
+      "removeModelsError": "No se pudieron borrar los modelos",
+      "removeModelsSuccess": "Modelos Eliminados",
+      "removeModelsSuccessDesc": "Se eliminaron todos los modelos Whisper descargados para liberar espacio."
     },
     "ai": {
       "title": "Modelos IA",
@@ -70,8 +78,10 @@
       "private": "Privado"
     },
     "dialogs": {
-      "accessibilitySuccess": "Prueba de Accesibilidad Exitosa",
+      "accessibilitySuccess": "✅ Prueba de Accesibilidad Exitosa",
       "accessibilitySuccessDesc": "¡Permisos de accesibilidad funcionando! Verifica si el texto de prueba apareció en otra aplicación.",
+      "accessibilityError": "❌ Se Necesitan Permisos",
+      "accessibilityErrorDesc": "Por favor concede permisos de accesibilidad en la Configuración del Sistema.",
       "hotkeyError": "Atajo No Guardado",
       "hotkeyErrorDesc": "Error:"
     },
@@ -79,6 +89,7 @@
       "title": "Transcripción",
       "speechToText": "Procesamiento de Voz",
       "microphone": "Micrófono",
+      "visualizerTitle": "Entrada de Micrófono",
       "microphoneSelect": "Seleccionar micrófono",
       "defaultMic": "Predeterminado del Sistema",
       "micAccessNeeded": "Se requiere acceso al micrófono.",

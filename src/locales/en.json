@@ -38,6 +38,7 @@
       "permissions": "Permissions",
       "permissionsDesc": "Manage microphone and accessibility permissions.",
       "testMic": "Test Microphone",
+      "stopMicTest": "Stop Test",
       "testAccess": "Test Accessibility",
       "fixPermissions": "Fix Permissions",
       "about": "About OpenWhispr",
@@ -55,7 +56,14 @@
       "downloadUpdate": "Download Update",
       "installRestart": "Install & Restart",
       "whatsNew": "What's New:",
-      "released": "Released:"
+      "released": "Released:",
+      "updateError": "Update Error",
+      "updateErrorDesc": "The updater encountered a problem. Please try downloading manually.",
+      "stillRunning": "Still Running?",
+      "manualRestartDesc": "OpenWhispr didn't restart automatically. Please close and reopen it.",
+      "removeModelsError": "Unable to Remove Models",
+      "removeModelsSuccess": "Models Removed",
+      "removeModelsSuccessDesc": "All downloaded Whisper models were deleted to free up disk space."
     },
     "ai": {
       "title": "AI Models",
@@ -70,8 +78,10 @@
       "private": "Private"
     },
     "dialogs": {
-      "accessibilitySuccess": "Accessibility Test Successful",
+      "accessibilitySuccess": "✅ Accessibility Test Successful",
       "accessibilitySuccessDesc": "Accessibility permissions working! Check if the test text appeared in another app.",
+      "accessibilityError": "❌ Accessibility Permissions Needed",
+      "accessibilityErrorDesc": "Please grant accessibility permissions in System Settings to enable automatic text pasting.",
       "hotkeyError": "Hotkey Not Saved",
       "hotkeyErrorDesc": "Error:"
     },
@@ -79,6 +89,7 @@
       "title": "Transcription",
       "speechToText": "Speech to Text Processing",
       "microphone": "Microphone",
+      "visualizerTitle": "Microphone Input",
       "microphoneSelect": "Select a microphone",
       "defaultMic": "Default System Microphone",
       "micAccessNeeded": "Microphone access is needed to list devices.",

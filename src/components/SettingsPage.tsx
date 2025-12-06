@@ -23,6 +23,7 @@ import AIModelSelectorEnhanced from "./AIModelSelectorEnhanced";
 import MicrophoneSelector from "./ui/MicrophoneSelector";
 import type { UpdateInfoResult } from "../types/electron";
 import HotkeyRecorder from "./ui/HotkeyRecorder";
+import { AudioVisualizer } from "./ui/AudioVisualizer";
 const InteractiveKeyboard = React.lazy(() => import("./ui/Keyboard"));
 
 export type SettingsSectionType =
@@ -105,6 +106,7 @@ export default function SettingsPage({
     releaseNotes?: string;
   }>({});
   const [isRemovingModels, setIsRemovingModels] = useState(false);
+  const [isTestingMic, setIsTestingMic] = useState(false);
   const cachePathHint =
     typeof navigator !== "undefined" && /Windows/i.test(navigator.userAgent)
       ? "%USERPROFILE%\\.cache\\openwhispr\\models"
@@ -193,11 +195,11 @@ export default function SettingsPage({
           setInstallInitiated(false);
           console.error("Update error:", error);
           showAlertDialog({
-            title: "Update Error",
+            title: t('settings.general.updateError', 'Update Error'),
             description:
               typeof error?.message === "string"
                 ? error.message
-                : "The updater encountered a problem. Please try again or download the latest release manually.",
+                : t('settings.general.updateErrorDesc', 'The updater encountered a problem. Please try downloading manually.'),
           });
         })
       );
@@ -372,7 +374,7 @@ export default function SettingsPage({
         if (geminiApiKey) savedKeys.push("Gemini");
 
         showAlertDialog({
-          title: "API Keys Saved",
+          title: t('settings.custom.apiKeysSaved', 'API Keys Saved'),
           description: `${savedKeys.join(", ")} API key${savedKeys.length > 1 ? 's' : ''} saved successfully! Your credentials have been securely recorded.${allowLocalFallback ? " Local Whisper fallback is enabled." : ""
             }`,
         });
@@ -455,10 +457,9 @@ export default function SettingsPage({
     if (isRemovingModels) return;
 
     showConfirmDialog({
-      title: "Remove downloaded models?",
-      description:
-        `This deletes all locally cached Whisper models (${cachePathHint}) and frees disk space.You can download them again from the model picker.`,
-      confirmText: "Delete Models",
+      title: t('dialogs.removeModelsTitle', 'Remove downloaded models?'),
+      description: t('dialogs.removeModelsDesc', 'This deletes all locally cached Whisper models and frees disk space.'),
+      confirmText: t('common.delete', "Delete Models"),
       variant: "destructive",
       onConfirm: () => {
         setIsRemovingModels(true);
@@ -467,7 +468,7 @@ export default function SettingsPage({
           .then((result) => {
             if (!result?.success) {
               showAlertDialog({
-                title: "Unable to Remove Models",
+                title: t('settings.general.removeModelsError', 'Unable to Remove Models'),
                 description:
                   result?.error ||
                   "Something went wrong while deleting the cached models.",
@@ -478,14 +479,13 @@ export default function SettingsPage({
             window.dispatchEvent(new Event("openwhispr-models-cleared"));
 
             showAlertDialog({
-              title: "Models Removed",
-              description:
-                "All downloaded Whisper models were deleted. You can re-download any model from the picker when needed.",
+              title: t('settings.general.removeModelsSuccess', 'Models Removed'),
+              description: t('settings.general.removeModelsSuccessDesc', 'All downloaded Whisper models were deleted to free up disk space.'),
             });
           })
           .catch((error) => {
             showAlertDialog({
-              title: "Unable to Remove Models",
+              title: t('settings.general.removeModelsError', 'Unable to Remove Models'),
               description: error?.message || "An unknown error occurred.",
             });
           })
@@ -780,6 +780,19 @@ export default function SettingsPage({
                     updateTranscriptionSettings({ selectedMicrophone: deviceId });
                   }}
                 />
+
+                {isTestingMic && (
+                  <div className="p-4 bg-gray-900 rounded-xl border border-gray-800">
+                    <p className="text-xs text-gray-400 mb-2 font-medium uppercase tracking-wider">
+                      {t('settings.transcription.visualizerTitle', 'Microphone Input')}
+                    </p>
+                    <AudioVisualizer
+                      deviceId={selectedMicrophone}
+                      isRecording={true}
+                      className="w-full"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -795,12 +808,21 @@ export default function SettingsPage({
               </div>
               <div className="space-y-3">
                 <Button
-                  onClick={permissionsHook.requestMicPermission}
-                  variant="outline"
+                  onClick={async () => {
+                    if (isTestingMic) {
+                      setIsTestingMic(false);
+                      return;
+                    }
+
+                    // Request permission first
+                    await permissionsHook.requestMicPermission();
+                    setIsTestingMic(true);
+                  }}
+                  variant={isTestingMic ? "destructive" : "outline"}
                   className="w-full"
                 >
                   <Mic className="mr-2 h-4 w-4" />
-                  {t('settings.general.testMic')}
+                  {isTestingMic ? t('settings.general.stopMicTest', 'Stop Test') : t('settings.general.testMic')}
                 </Button>
                 <Button
                   onClick={permissionsHook.testAccessibilityPermission}

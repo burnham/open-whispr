@@ -175,24 +175,18 @@ class WhisperManager {
 
     debugLogger.log('Buffer created, size:', buffer.length);
 
-    // Validate buffer before writing
+    // RELAXED VALIDATION: Log warning but allow processing
+    // This ensures even very short/quiet audio (which might have valid headers) is passed to FFmpeg/Whisper
     if (!buffer || buffer.length === 0) {
-      debugLogger.error('Buffer is empty before writing');
-      throw new Error("Audio buffer is empty - no audio data received");
+      debugLogger.warn('Buffer is empty before writing - transcription will likely return empty or hallucinate');
+    } else if (buffer.length < 44) {
+      debugLogger.warn('Buffer smaller than minimal WAV header (44 bytes)');
     }
 
-    // Minimum viable audio file size (WAV header is 44 bytes minimum)
-    const MIN_AUDIO_SIZE = 44;
-    if (buffer.length < MIN_AUDIO_SIZE) {
-      debugLogger.error('Buffer too small to be valid audio:', buffer.length, 'bytes');
-      throw new Error(`Audio data too small (${buffer.length} bytes) - recording may have failed`);
-    }
-
-    // Validate WAV header if present
+    // Validate WAV header if present (logging only)
     const hasValidWavHeader = this.validateWavHeader(buffer);
     if (!hasValidWavHeader) {
-      debugLogger.log('No valid WAV header detected, buffer may need conversion');
-      // Don't throw error - FFmpeg can handle headerless audio data
+      debugLogger.log('No valid WAV header detected, buffer may need conversion (proceeding)');
     }
 
     await fsPromises.writeFile(tempAudioPath, buffer);
@@ -209,13 +203,7 @@ class WhisperManager {
     debugLogger.logWhisperPipeline('Temp audio file created', fileInfo);
 
     if (stats.size === 0) {
-      debugLogger.error('Audio file is empty after writing');
-      throw new Error("Audio file is empty - file write failed");
-    }
-
-    if (stats.size < MIN_AUDIO_SIZE) {
-      debugLogger.error('Audio file too small after writing:', stats.size, 'bytes');
-      throw new Error(`Audio file too small (${stats.size} bytes) - recording failed`);
+      debugLogger.warn('Audio file is empty after writing - downstream process may fail');
     }
 
     return tempAudioPath;
