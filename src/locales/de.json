@@ -2,6 +2,14 @@
   "settings": {
     "general": {
       "title": "Allgemein",
+      "mainTitle": "Einstellungen",
+      "menu": {
+        "general": "Allgemein",
+        "transcription": "Transkriptionsmodus",
+        "aiModels": "KI-Modelle",
+        "agentConfig": "Agenten-Konfiguration",
+        "prompts": "KI-Prompts"
+      },
       "appUpdates": "App-Updates",
       "appUpdatesDesc": "Halten Sie OpenWhispr auf dem neuesten Stand.",
       "currentVersion": "Aktuelle Version",
@@ -49,6 +57,10 @@
       "cloudWhisper": "Cloud Whisper",
       "localWhisperDesc": "Privat & Offline",
       "cloudWhisperDesc": "Schnell & Hohe Qualität",
+      "cloudWhisperDetail": "Audio wird an OpenAI-Server gesendet. Schnellere Verarbeitung, benötigt API-Key.",
+      "localWhisperDetail": "Audio bleibt auf Ihrem Gerät. Volle Privatsphäre, funktioniert offline.",
+      "supportsOpenAI": "Unterstützt OpenAI oder kompatible Endpunkte.",
+      "getApiKey": "API-Key erhalten",
       "openAiSetup": "Cloud Setup (OpenAI)",
       "customBaseUrl": "Benutzerdefinierte URL (optional)",
       "resetDefault": "Standard wiederherstellen",
@@ -121,7 +133,9 @@
     "delete": "Löschen",
     "remove": "Entfernen",
     "install": "Installieren",
-    "restart": "Neustart"
+    "restart": "Neustart",
+    "apiKey": "API-Schlüssel",
+    "paste": "Einfügen"
   },
   "dialogs": {
     "resetOnboardingTitle": "Onboarding zurücksetzen",

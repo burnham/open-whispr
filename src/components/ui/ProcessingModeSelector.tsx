@@ -19,11 +19,10 @@ export default function ProcessingModeSelector({
     <div className={`grid grid-cols-1 md:grid-cols-2 gap-3 ${className}`}>
       <button
         onClick={() => setUseLocalWhisper(false)}
-        className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${
-          !useLocalWhisper
+        className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${!useLocalWhisper
             ? "border-indigo-500 bg-indigo-50"
             : "border-neutral-200 bg-white hover:border-neutral-300"
-        }`}
+          }`}
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
@@ -35,17 +34,16 @@ export default function ProcessingModeSelector({
           </span>
         </div>
         <p className="text-sm text-neutral-600">
-          Audio sent to OpenAI servers. Faster processing, requires API key.
+          {t('settings.transcription.cloudWhisperDetail')}
         </p>
       </button>
 
       <button
         onClick={() => setUseLocalWhisper(true)}
-        className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${
-          useLocalWhisper
+        className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${useLocalWhisper
             ? "border-indigo-500 bg-indigo-50"
             : "border-neutral-200 bg-white hover:border-neutral-300"
-        }`}
+          }`}
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
@@ -57,7 +55,7 @@ export default function ProcessingModeSelector({
           </span>
         </div>
         <p className="text-sm text-neutral-600">
-          Audio stays on your device. Complete privacy, works offline.
+          {t('settings.transcription.localWhisperDetail')}
         </p>
       </button>
     </div>

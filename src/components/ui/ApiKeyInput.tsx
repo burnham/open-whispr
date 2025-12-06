@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 import { useClipboard } from "../../hooks/useClipboard";
+import { useTranslation } from "react-i18next";
 
 interface ApiKeyInputProps {
   apiKey: string;
@@ -18,11 +19,13 @@ export default function ApiKeyInput({
   setApiKey,
   className = "",
   placeholder = "sk-...",
-  label = "API Key",
-  helpText = "Get your API key from platform.openai.com",
+  label,
+  helpText,
   variant = "default",
 }: ApiKeyInputProps) {
+  const { t } = useTranslation();
   const { pasteFromClipboardWithFallback } = useClipboard();
+  const finalLabel = label || t('common.apiKey');
 
   const variantClasses =
     variant === "purple" ? "border-purple-300 focus:border-purple-500" : "";
@@ -35,7 +38,7 @@ export default function ApiKeyInput({
   return (
     <div className={className}>
       <label className="block text-sm font-medium text-neutral-700 mb-2">
-        {label}
+        {finalLabel}
       </label>
       <div className="flex gap-3">
         <Input
@@ -50,7 +53,7 @@ export default function ApiKeyInput({
           onClick={() => pasteFromClipboardWithFallback(setApiKey)}
           className={buttonVariantClasses}
         >
-          Paste
+          {t('common.paste')}
         </Button>
       </div>
       {helpText && (

@@ -501,8 +501,8 @@ export default function SettingsPage({
       case "general":
         return (
           <div className="space-y-8">
-             {/* Language Section */}
-             <div className="border-b pb-8">
+            {/* Language Section */}
+            <div className="border-b pb-8">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {t('settings.general.title')}
@@ -954,14 +954,14 @@ export default function SettingsPage({
                   setApiKey={setOpenaiApiKey}
                   helpText={
                     <>
-                      Supports OpenAI or compatible endpoints.{" "}
+                      {t('settings.transcription.supportsOpenAI')}{" "}
                       <a
                         href="https://platform.openai.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
                       >
-                        Get an API key
+                        {t('settings.transcription.getApiKey')}
                       </a>
                       .
                     </>
@@ -1174,17 +1174,17 @@ export default function SettingsPage({
         );
 
 
-            case "prompts":
-              return (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {t('settings.prompts.title')}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-6">
-                      {t('settings.prompts.desc')}
-                    </p>
-                  </div>
+      case "prompts":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {t('settings.prompts.title')}
+              </h3>
+              <p className="text-sm text-gray-600 mb-6">
+                {t('settings.prompts.desc')}
+              </p>
+            </div>
             <PromptStudio />
           </div>
         );

@@ -2,6 +2,7 @@ import React from "react";
 import { Settings, Mic, Brain, User, Sparkles } from "lucide-react";
 import SidebarModal, { SidebarItem } from "./ui/SidebarModal";
 import SettingsPage, { SettingsSectionType } from "./SettingsPage";
+import { useTranslation } from "react-i18next";
 
 interface SettingsModalProps {
   open: boolean;
@@ -12,12 +13,14 @@ export default function SettingsModal({
   open,
   onOpenChange,
 }: SettingsModalProps) {
+  const { t } = useTranslation();
+
   const sidebarItems: SidebarItem<SettingsSectionType>[] = [
-    { id: "general", label: "General", icon: Settings },
-    { id: "transcription", label: "Transcription Mode", icon: Mic },
-    { id: "aiModels", label: "AI Models", icon: Brain },
-    { id: "agentConfig", label: "Agent Configuration", icon: User },
-    { id: "prompts", label: "AI Prompts", icon: Sparkles },
+    { id: "general", label: t('settings.general.menu.general'), icon: Settings },
+    { id: "transcription", label: t('settings.general.menu.transcription'), icon: Mic },
+    { id: "aiModels", label: t('settings.general.menu.aiModels'), icon: Brain },
+    { id: "agentConfig", label: t('settings.general.menu.agentConfig'), icon: User },
+    { id: "prompts", label: t('settings.general.menu.prompts'), icon: Sparkles },
   ];
 
   const [activeSection, setActiveSection] =
@@ -27,7 +30,7 @@ export default function SettingsModal({
     <SidebarModal<SettingsSectionType>
       open={open}
       onOpenChange={onOpenChange}
-      title="Settings"
+      title={t('settings.general.mainTitle')}
       sidebarItems={sidebarItems}
       activeSection={activeSection}
       onSectionChange={setActiveSection}
