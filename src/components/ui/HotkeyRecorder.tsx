@@ -16,7 +16,6 @@ export default function HotkeyRecorder({
 }: HotkeyRecorderProps) {
     const { t } = useTranslation();
     const [isRecording, setIsRecording] = useState(false);
-    const [currentCombo, setCurrentCombo] = useState<Set<string>>(new Set());
     const inputRef = useRef<HTMLDivElement>(null);
 
     // Map of keys to Electron Accelerator format
@@ -39,11 +38,7 @@ export default function HotkeyRecorder({
             e.preventDefault();
             e.stopPropagation();
 
-            // Ignore standalone modifier presses if we want to wait for a combo
-            // But we need to show them being pressed.
-
             const key = e.key;
-            const code = e.code;
 
             // Determine the label for the key
             let label = key;
@@ -53,11 +48,7 @@ export default function HotkeyRecorder({
                 label = key.toUpperCase();
             }
 
-            // If it's a modifier, just add it to current combo visualization
-            // If it's a non-modifier, it completes the combo (mostly)
-
             const isMac = window.electronAPI?.platform === 'darwin';
-
             const modifiers: string[] = [];
 
             if (e.ctrlKey) modifiers.push("Control");
@@ -76,27 +67,14 @@ export default function HotkeyRecorder({
             const parts = [...new Set([...modifiers, finalKey])].filter(Boolean);
             const accelerator = parts.join("+");
 
-            // VALIDATION: Enforce at least one modifier if a key is pressed, UNLESS it's a Function key (F1-F12) or specific keys
-            const isFunctionKey = /^F[1-9][0-2]?$/.test(finalKey);
-
-            if (finalKey && modifiers.length === 0 && !isFunctionKey) {
-                // Invalid: Single key without modifier (except F-keys)
-                return;
-            }
-
-            if (parts.length > 0 && modifiers.length > 0) {
+            // Allow ANY combination. Let Electron/Backend decide if it's valid.
+            // We update the value in real-time as they type
+            if (parts.length > 0) {
                 onChange(accelerator);
             }
 
-            // If a non-modifier key was pressed AND we have modifiers, OR if we want to allow single keys (but better to enforce mod+key)
-            // For global shortcuts, Electron generally wants Modifier+Key.
-            // If finalKey is empty (meaning only modifiers pressed), do NOT save yet.
-            if (!finalKey) {
-                return;
-            }
-
-            if (parts.length > 0 && modifiers.length > 0) {
-                onChange(accelerator);
+            // If it has a final key (non-modifier), we consider it "done" and stop recording.
+            if (finalKey) {
                 setIsRecording(false);
                 inputRef.current?.blur();
             }
@@ -108,12 +86,6 @@ export default function HotkeyRecorder({
 
     const startRecording = () => {
         setIsRecording(true);
-        setCurrentCombo(new Set());
-    };
-
-    const stopRecording = (e?: React.MouseEvent) => {
-        e?.stopPropagation();
-        setIsRecording(false);
     };
 
     const clearHotkey = (e: React.MouseEvent) => {
@@ -123,10 +95,10 @@ export default function HotkeyRecorder({
     };
 
     // Format the display value
-    const displayValue = value.split("+").map(part => {
+    const displayValue = value ? value.split("+").map(part => {
         if (part === "CommandOrControl") return "Ctrl";
         return part;
-    }).join(" + ");
+    }).join(" + ") : "";
 
     return (
         <div
