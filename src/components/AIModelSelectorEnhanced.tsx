@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from "react-i18next";
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Cloud, Lock, Brain, Zap, Globe, Cpu, Download, Check, Wrench } from 'lucide-react';
+import { Cloud, Lock, Brain, Zap, Globe, Cpu, Download, Check, Wrench, Monitor } from 'lucide-react';
 import ApiKeyInput from './ui/ApiKeyInput';
 import { UnifiedModelPickerCompact } from './UnifiedModelPicker';
 import { API_ENDPOINTS, buildApiUrl, normalizeBaseUrl } from '../config/constants';
@@ -98,13 +99,14 @@ const ProviderIcon = ({ provider }: { provider: string }) => {
       default: return <Brain className={iconClass} />;
     }
   };
-  
+
   // Try to load SVG if it exists and we haven't had an error
   if (!svgError) {
+    const src = `/assets/icons/providers/${provider}.svg`;
     return (
       <>
-        <img 
-          src={`/assets/icons/providers/${provider}.svg`}
+        <img
+          src={src}
           alt={`${provider} icon`}
           className={iconClass}
           onError={() => setSvgError(true)}
@@ -114,7 +116,7 @@ const ProviderIcon = ({ provider }: { provider: string }) => {
       </>
     );
   }
-  
+
   return getFallbackIcon();
 };
 
@@ -136,6 +138,7 @@ export default function AIModelSelectorEnhanced({
   pasteFromClipboard,
   showAlertDialog,
 }: AIModelSelectorEnhancedProps) {
+  const { t } = useTranslation();
   const [selectedMode, setSelectedMode] = useState<'cloud' | 'local'>('cloud');
   const [selectedCloudProvider, setSelectedCloudProvider] = useState('openai');
   const [selectedLocalProvider, setSelectedLocalProvider] = useState('qwen');
@@ -224,7 +227,6 @@ export default function AIModelSelectorEnhanced({
           return;
         }
 
-        // Security: Only allow HTTPS endpoints (except localhost for development)
         const isLocalhost = normalizedBase.includes('://localhost') || normalizedBase.includes('://127.0.0.1');
         if (!normalizedBase.startsWith('https://') && !isLocalhost) {
           if (isMountedRef.current && latestReasoningBaseRef.current === normalizedBase) {
@@ -256,8 +258,8 @@ export default function AIModelSelectorEnhanced({
         const rawModels = Array.isArray(payload?.data)
           ? payload.data
           : Array.isArray(payload?.models)
-          ? payload.models
-          : [];
+            ? payload.models
+            : [];
 
         const mappedModels = (rawModels as Array<any>)
           .map((item) => {
@@ -293,7 +295,7 @@ export default function AIModelSelectorEnhanced({
         if (isMountedRef.current && latestReasoningBaseRef.current === normalizedBase) {
           const message =
             (error as Error).message || 'Unable to load models from endpoint.';
-          const unauthorized = /\b(401|403)\b/.test(message);
+          const unauthorized = new RegExp('\\b(401|403)\\b').test(message);
           if (unauthorized && !apiKey) {
             setCustomModelsError(
               'Endpoint rejected the request (401/403). Add an API key or adjust server auth settings.'
@@ -386,7 +388,6 @@ export default function AIModelSelectorEnhanced({
     loadRemoteModels(undefined, true);
   }, [handleApplyCustomBase, isCustomBaseDirty, trimmedCustomBase, loadRemoteModels]);
 
-  // Initialize based on current provider
   useEffect(() => {
     if (localProviders.includes(localReasoningProvider)) {
       setSelectedMode('local');
@@ -395,11 +396,9 @@ export default function AIModelSelectorEnhanced({
       setSelectedMode('cloud');
       setSelectedCloudProvider(localReasoningProvider);
     }
-    
-    // Check downloaded models
     checkDownloadedModels();
   }, []);
-  
+
   useEffect(() => {
     if (selectedCloudProvider !== 'custom') {
       return;
@@ -425,7 +424,6 @@ export default function AIModelSelectorEnhanced({
     loadRemoteModels();
   }, [selectedCloudProvider, hasCustomBase, normalizedCustomReasoningBase, loadRemoteModels]);
 
-  // Check which models are downloaded
   const checkDownloadedModels = async () => {
     try {
       const result = await window.electronAPI?.modelGetAll?.();
@@ -437,8 +435,7 @@ export default function AIModelSelectorEnhanced({
       console.error('Failed to check downloaded models:', error);
     }
   };
-  
-  // Handle model download with minimal code
+
   const downloadModel = async (modelId: string) => {
     setDownloadingModel(modelId);
     try {
@@ -454,9 +451,8 @@ export default function AIModelSelectorEnhanced({
 
   const handleModeChange = async (newMode: 'cloud' | 'local') => {
     setSelectedMode(newMode);
-    
+
     if (newMode === 'cloud') {
-      // Switch to cloud mode
       setLocalReasoningProvider(selectedCloudProvider);
 
       if (selectedCloudProvider === 'custom') {
@@ -477,7 +473,6 @@ export default function AIModelSelectorEnhanced({
         setReasoningModel(provider.models[0].value);
       }
     } else {
-      // Switch to local mode
       setLocalReasoningProvider(selectedLocalProvider);
       const provider = modelRegistry.getProvider(selectedLocalProvider);
       if (provider?.models?.length > 0) {
@@ -489,8 +484,7 @@ export default function AIModelSelectorEnhanced({
   const handleCloudProviderChange = (provider: string) => {
     setSelectedCloudProvider(provider);
     setLocalReasoningProvider(provider);
-    
-    // Update model to first available
+
     if (provider === 'custom') {
       setCustomBaseInput(cloudReasoningBaseUrl);
       lastLoadedBaseRef.current = null;
@@ -513,7 +507,6 @@ export default function AIModelSelectorEnhanced({
   const handleLocalProviderChange = (provider: string) => {
     setSelectedLocalProvider(provider);
     setLocalReasoningProvider(provider);
-    // Update model to first available
     const providerData = modelRegistry.getProvider(provider);
     if (providerData?.models?.length > 0) {
       setReasoningModel(providerData.models[0].id);
@@ -523,7 +516,7 @@ export default function AIModelSelectorEnhanced({
   const getProviderColor = (provider: string) => {
     const colors: Record<string, string> = {
       'openai': 'green',
-      'anthropic': 'purple', 
+      'anthropic': 'purple',
       'gemini': 'blue',
       'qwen': 'indigo',
       'mistral': 'orange',
@@ -536,14 +529,13 @@ export default function AIModelSelectorEnhanced({
 
   return (
     <div className="space-y-6">
-      {/* Enable/Disable Toggle */}
       <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-xl">
         <div>
           <label className="text-sm font-medium text-green-800">
-            Enable AI Text Enhancement
+            {t('settings.ai.enable')}
           </label>
           <p className="text-xs text-green-700">
-            Use AI to automatically improve transcription quality
+            {t('settings.ai.enableDesc')}
           </p>
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
@@ -553,69 +545,58 @@ export default function AIModelSelectorEnhanced({
             checked={useReasoningModel}
             onChange={(e) => setUseReasoningModel(e.target.checked)}
           />
-          <div className={`w-11 h-6 bg-gray-200 rounded-full transition-colors duration-200 ${
-            useReasoningModel ? "bg-green-600" : "bg-gray-300"
-          }`}>
-            <div className={`absolute top-0.5 left-0.5 bg-white border border-gray-300 rounded-full h-5 w-5 transition-transform duration-200 ${
-              useReasoningModel ? "translate-x-5" : "translate-x-0"
-            }`} />
+          <div className={`w-11 h-6 bg-gray-200 rounded-full transition-colors duration-200 ${useReasoningModel ? "bg-green-600" : "bg-gray-300"}`}>
+            <div className={`absolute top-0.5 left-0.5 bg-white border border-gray-300 rounded-full h-5 w-5 transition-transform duration-200 ${useReasoningModel ? "translate-x-5" : "translate-x-0"}`} />
           </div>
         </label>
       </div>
 
       {useReasoningModel && (
         <>
-          {/* Cloud vs Local Selection */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <button
               onClick={() => handleModeChange('cloud')}
-              className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${
-                selectedMode === 'cloud'
-                  ? "border-indigo-500 bg-indigo-50"
-                  : "border-neutral-200 bg-white hover:border-neutral-300"
-              }`}
+              className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${selectedMode === 'cloud'
+                ? 'border-indigo-600 bg-indigo-50 shadow-sm'
+                : 'border-gray-200 hover:border-gray-300 bg-white'
+                }`}
             >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <Cloud className="w-6 h-6 text-blue-600" />
-                  <h4 className="font-medium text-neutral-900">Cloud AI</h4>
+              <div className="flex items-center gap-3 mb-2">
+                <div className={`p-2 rounded-lg ${selectedMode === 'cloud' ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-100 text-gray-500'}`}>
+                  <Cloud size={20} />
                 </div>
-                <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                  Powerful
+                <span className={`font-semibold ${selectedMode === 'cloud' ? 'text-indigo-900' : 'text-gray-700'}`}>
+                  {t('settings.ai.cloud')}
                 </span>
               </div>
-              <p className="text-sm text-neutral-600">
-                Advanced models via API. Fast and capable, requires internet.
+              <p className="text-xs text-gray-500 pl-[52px]">
+                {t('settings.ai.cloudDesc')}
               </p>
             </button>
 
             <button
               onClick={() => handleModeChange('local')}
-              className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${
-                selectedMode === 'local'
-                  ? "border-indigo-500 bg-indigo-50"
-                  : "border-neutral-200 bg-white hover:border-neutral-300"
-              }`}
+              className={`p-4 border-2 rounded-xl text-left transition-all cursor-pointer ${selectedMode === 'local'
+                ? 'border-emerald-600 bg-emerald-50 shadow-sm'
+                : 'border-gray-200 hover:border-gray-300 bg-white'
+                }`}
             >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <Lock className="w-6 h-6 text-purple-600" />
-                  <h4 className="font-medium text-neutral-900">Local AI</h4>
+              <div className="flex items-center gap-3 mb-2">
+                <div className={`p-2 rounded-lg ${selectedMode === 'local' ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-500'}`}>
+                  <Monitor size={20} />
                 </div>
-                <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-                  Private
+                <span className={`font-semibold ${selectedMode === 'local' ? 'text-emerald-900' : 'text-gray-700'}`}>
+                  {t('settings.ai.local')}
                 </span>
               </div>
-              <p className="text-sm text-neutral-600">
-                Runs on your device. Complete privacy, works offline.
+              <p className="text-xs text-gray-500 pl-[52px]">
+                {t('settings.ai.localDesc')}
               </p>
             </button>
           </div>
 
-          {/* Provider Content */}
           {selectedMode === 'cloud' ? (
             <div className="space-y-4">
-              {/* Cloud Provider Tabs */}
               <div className="border border-gray-200 rounded-xl overflow-hidden">
                 <div className="flex bg-gray-50 border-b border-gray-200">
                   {cloudProviders.map((provider) => {
@@ -629,11 +610,10 @@ export default function AIModelSelectorEnhanced({
                       <button
                         key={provider}
                         onClick={() => handleCloudProviderChange(provider)}
-                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 font-medium transition-all ${
-                          isSelected
-                            ? `text-${color}-700 border-b-2`
-                            : 'text-gray-600 hover:bg-gray-100'
-                        }`}
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 font-medium transition-all ${isSelected
+                          ? `text-${color}-700 border-b-2`
+                          : 'text-gray-600 hover:bg-gray-100'
+                          }`}
                         style={isSelected ? {
                           borderBottomColor: `rgb(99 102 241)`,
                           backgroundColor: 'rgb(238 242 255)'
@@ -647,80 +627,81 @@ export default function AIModelSelectorEnhanced({
                 </div>
 
                 <div className="p-4">
-                  {/* Use UnifiedModelPickerCompact for cloud models */}
                   {selectedCloudProvider === 'custom' ? (
                     <>
                       <div className="space-y-3">
-                        <h4 className="font-medium text-gray-900">Endpoint Settings</h4>
-                        <Input
-                          value={customBaseInput}
-                          onChange={(event) => setCustomBaseInput(event.target.value)}
-                          placeholder="https://api.openai.com/v1"
-                          className="text-sm"
-                        />
-                        <div className="flex flex-wrap gap-2">
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={handleResetCustomBase}
-                          >
-                            Reset to Default
-                          </Button>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={handleRefreshCustomModels}
-                            disabled={customModelsLoading || (!trimmedCustomBase && !hasSavedCustomBase)}
-                          >
-                            {customModelsLoading ? 'Loading models...' : isCustomBaseDirty ? 'Apply & Refresh' : 'Refresh Models'}
-                          </Button>
-                        </div>
-                        {isCustomBaseDirty && (
-                          <p className="text-xs text-amber-600">Apply the new base URL to refresh models.</p>
-                        )}
-                        <p className="text-xs text-gray-600">
-                          We'll query <code>{hasCustomBase ? `${effectiveReasoningBase}/models` : `${defaultOpenAIBase}/models`}</code> for available models.
-                        </p>
-                      </div>
-
-                      <div className="space-y-3 pt-4 border-t border-gray-200">
-                        <h4 className="font-medium text-gray-900">Authentication</h4>
-                        <ApiKeyInput
-                          apiKey={openaiApiKey}
-                          setApiKey={setOpenaiApiKey}
-                          helpText="Optional. Added as a Bearer token for your custom endpoint."
-                        />
-                      </div>
-
-                      <div className="space-y-3 pt-4 border-t border-gray-200">
-                        <h4 className="text-sm font-medium text-gray-700">Available Models</h4>
-                        {!hasCustomBase && (
-                          <p className="text-xs text-amber-600">
-                            Enter a base URL to load models.
+                        <div className="space-y-3">
+                          <h4 className="font-medium text-gray-900">{t('settings.ai.endpoint')}</h4>
+                          <Input
+                            value={customBaseInput}
+                            onChange={(event) => setCustomBaseInput(event.target.value)}
+                            placeholder="https://api.openai.com/v1"
+                            className="text-sm"
+                          />
+                          <div className="flex flex-wrap gap-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={handleResetCustomBase}
+                            >
+                              Reset to Default
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={handleRefreshCustomModels}
+                              disabled={customModelsLoading || (!trimmedCustomBase && !hasSavedCustomBase)}
+                            >
+                              {customModelsLoading ? 'Loading models...' : isCustomBaseDirty ? 'Apply & Refresh' : 'Refresh Models'}
+                            </Button>
+                          </div>
+                          {isCustomBaseDirty && (
+                            <p className="text-xs text-amber-600">Apply the new base URL to refresh models.</p>
+                          )}
+                          <p className="text-xs text-gray-600">
+                            We'll query <code>{hasCustomBase ? `${effectiveReasoningBase}/models` : `${defaultOpenAIBase}/models`}</code> for available models.
                           </p>
-                        )}
-                        {hasCustomBase && (
-                          <>
-                            {customModelsLoading && (
-                              <p className="text-xs text-blue-600">Fetching model list...</p>
-                            )}
-                            {customModelsError && (
-                              <p className="text-xs text-red-600">{customModelsError}</p>
-                            )}
-                            {!customModelsLoading && !customModelsError && customModelOptions.length === 0 && (
-                              <p className="text-xs text-amber-600">
-                                No models returned by this endpoint.
-                              </p>
-                            )}
-                          </>
-                        )}
-                        <UnifiedModelPickerCompact
-                          models={selectedCloudModels}
-                          selectedModel={reasoningModel}
-                          onModelSelect={setReasoningModel}
-                        />
+                        </div>
+
+                        <div className="space-y-3 pt-4 border-t border-gray-200">
+                          <h4 className="font-medium text-gray-900">Authentication</h4>
+                          <ApiKeyInput
+                            apiKey={openaiApiKey}
+                            setApiKey={setOpenaiApiKey}
+                            helpText="Optional. Added as a Bearer token for your custom endpoint."
+                          />
+                        </div>
+
+                        <div className="space-y-3 pt-4 border-t border-gray-200">
+                          <h4 className="text-sm font-medium text-gray-700">Available Models</h4>
+                          {!hasCustomBase && (
+                            <p className="text-xs text-amber-600">
+                              Enter a base URL to load models.
+                            </p>
+                          )}
+                          {hasCustomBase && (
+                            <>
+                              {customModelsLoading && (
+                                <p className="text-xs text-blue-600">Fetching model list...</p>
+                              )}
+                              {customModelsError && (
+                                <p className="text-xs text-red-600">{customModelsError}</p>
+                              )}
+                              {!customModelsLoading && !customModelsError && customModelOptions.length === 0 && (
+                                <p className="text-xs text-amber-600">
+                                  No models returned by this endpoint.
+                                </p>
+                              )}
+                            </>
+                          )}
+                          <UnifiedModelPickerCompact
+                            models={selectedCloudModels}
+                            selectedModel={reasoningModel}
+                            onModelSelect={setReasoningModel}
+                          />
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -734,7 +715,6 @@ export default function AIModelSelectorEnhanced({
                         />
                       </div>
 
-                  {/* API Key Configuration */}
                       <div className="mt-4 pt-4 border-t border-gray-200">
                         {selectedCloudProvider === 'openai' && (
                           <div className="space-y-3">
@@ -816,7 +796,6 @@ export default function AIModelSelectorEnhanced({
             </div>
           ) : (
             <div className="space-y-4">
-              {/* Local Provider Tabs */}
               <div className="border border-gray-200 rounded-xl overflow-hidden">
                 <div className="flex bg-gray-50 border-b border-gray-200 overflow-x-auto">
                   {localProviders.map((provider) => {
@@ -826,11 +805,10 @@ export default function AIModelSelectorEnhanced({
                       <button
                         key={provider}
                         onClick={() => handleLocalProviderChange(provider)}
-                        className={`flex items-center justify-center gap-2 px-4 py-3 font-medium transition-all whitespace-nowrap ${
-                          isSelected
-                            ? 'text-purple-700 border-b-2'
-                            : 'text-gray-600 hover:bg-gray-100'
-                        }`}
+                        className={`flex items-center justify-center gap-2 px-4 py-3 font-medium transition-all whitespace-nowrap ${isSelected
+                          ? 'text-purple-700 border-b-2'
+                          : 'text-gray-600 hover:bg-gray-100'
+                          }`}
                         style={isSelected ? {
                           borderBottomColor: 'rgb(147 51 234)',
                           backgroundColor: 'rgb(250 245 255)'
@@ -843,7 +821,6 @@ export default function AIModelSelectorEnhanced({
                   })}
                 </div>
 
-                {/* Local Model List with Download */}
                 <div className="p-4">
                   <div className="space-y-3">
                     <h4 className="text-sm font-medium text-gray-700">Available Models</h4>
@@ -852,22 +829,21 @@ export default function AIModelSelectorEnhanced({
                       if (!provider || !provider.models) {
                         return <p className="text-sm text-gray-500">No models available for this provider</p>;
                       }
-                      
+
                       return (
                         <div className="space-y-2">
                           {provider.models.map((model) => {
                             const isDownloaded = downloadedModels.has(model.id);
                             const isDownloading = downloadingModel === model.id;
                             const isSelected = reasoningModel === model.id;
-                            
+
                             return (
                               <div
                                 key={model.id}
-                                className={`p-3 rounded-lg border-2 transition-all ${
-                                  isSelected
-                                    ? 'border-purple-500 bg-purple-50'
-                                    : 'border-gray-200 bg-white hover:border-gray-300'
-                                }`}
+                                className={`p-3 rounded-lg border-2 transition-all ${isSelected
+                                  ? 'border-purple-500 bg-purple-50'
+                                  : 'border-gray-200 bg-white hover:border-gray-300'
+                                  }`}
                               >
                                 <div className="flex items-center justify-between">
                                   <div className="flex-1">

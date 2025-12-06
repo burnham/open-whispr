@@ -22,6 +22,15 @@
       "activationKey": "Aktivierungstaste",
       "pressKeyDesc": "Drücken Sie diese Taste überall zum Diktieren",
       "saveHotkey": "Speichern",
+      "hotkey": {
+        "pressKeys": "Tasten drücken (z.B. Strg + Leer)...",
+        "clickToRecord": "Klicken zum Aufnehmen",
+        "clear": "Hotkey löschen",
+        "errorTitle": "Hotkey nicht gespeichert",
+        "errorDesc": "Diese Taste konnte nicht registriert werden. Bitte wählen Sie eine andere.",
+        "savedTitle": "Hotkey gespeichert",
+        "savedDesc": "Diktier-Hotkey gespeichert: {{key}}"
+      },
       "clickToRecord": "Klicken zum Aufnehmen. Drücken Sie eine Tastenkombination zum Festlegen.",
       "permissions": "Berechtigungen",
       "permissionsDesc": "Berechtigungen für Mikrofon und Zugänglichkeit verwalten.",
@@ -44,6 +53,18 @@
       "installRestart": "Installieren & Neustart",
       "whatsNew": "Neuheiten:",
       "released": "Veröffentlicht:"
+    },
+    "ai": {
+      "title": "KI-Modelle",
+      "enable": "KI-Textverbesserung aktivieren",
+      "enableDesc": "Nutze KI, um die Transkriptionsqualität automatisch zu verbessern",
+      "cloud": "Cloud KI",
+      "cloudDesc": "Erweiterte Modelle über API. Schnell und leistungsfähig, erfordert Internet.",
+      "local": "Lokale KI",
+      "localDesc": "Läuft auf deinem Gerät. Komplette Privatsphäre, funktioniert offline.",
+      "endpoint": "Endpunkt-Einstellungen",
+      "powerful": "Leistungsstark",
+      "private": "Privat"
     },
     "transcription": {
       "title": "Transkription",
@@ -94,7 +115,30 @@
     },
     "prompts": {
       "title": "KI-Prompts",
-      "desc": "Verwalten Sie die System-Prompts von OpenWhispr."
+      "desc": "Sehen und passen Sie die Prompts an, die die AI-Textverarbeitung von OpenWhispr steuern.",
+      "tabs": {
+        "current": "Aktuelle Prompts",
+        "customize": "Anpassen",
+        "test": "Testen"
+      },
+      "current_title": "Aktuelle AI-Prompts",
+      "current_desc": "Dies sind die genauen Prompts, die derzeit an Ihre AI-Modelle gesendet werden. Wenn Sie diese verstehen, sehen Sie, wie OpenWhispr denkt!",
+      "agent_mode_title": "Agentenmodus-Prompt (wenn Sie \"Hey {{name}}\" sagen)",
+      "regular_mode_title": "Regulärer Modus-Prompt (für automatische Bereinigung)",
+      "copy_button": "Prompt kopieren",
+      "customize_title": "Passen Sie Ihre AI-Prompts an",
+      "customize_desc": "Bearbeiten Sie diese Prompts, um das Verhalten Ihrer AI zu ändern. Verwenden Sie {{agentName}} und {{text}} als Platzhalter.",
+      "agent_prompt_label": "Agentenmodus-Prompt",
+      "regular_prompt_label": "Regulärer Modus-Prompt",
+      "save_custom": "Benutzerdefinierte Prompts speichern",
+      "reset_defaults": "Auf Standardwerte zurücksetzen",
+      "test_title": "Testen Sie Ihre Prompts",
+      "test_desc": "Testen Sie Ihre benutzerdefinierten Prompts mit dem echten AI-Modell, um echte Ergebnisse zu sehen.",
+      "test_input_label": "Testeingabe",
+      "test_input_placeholder": "Geben Sie Text ein, um ihn mit Ihren benutzerdefinierten Prompts zu testen...",
+      "test_button": "Prompt mit AI testen",
+      "test_processing": "Wird mit AI verarbeitet...",
+      "ai_response": "AI-Antwort"
     }
   },
   "controlPanel": {
