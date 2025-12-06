@@ -20,8 +20,8 @@ export default function HotkeyRecorder({
     // Map of keys to Electron Accelerator format
     const keyMap: Record<string, string> = {
         " ": "Space",
-        "Control": "CommandOrControl",
-        "Meta": "CommandOrControl", // For Mac Command key
+        "Control": "Control",
+        "Meta": window.electronAPI?.platform === 'darwin' ? "Command" : "Super",
         "Alt": "Alt",
         "Shift": "Shift",
         "ArrowUp": "Up",
@@ -54,10 +54,14 @@ export default function HotkeyRecorder({
             // If it's a modifier, just add it to current combo visualization
             // If it's a non-modifier, it completes the combo (mostly)
 
+            const isMac = window.electronAPI?.platform === 'darwin';
+
             const modifiers: string[] = [];
-            if (e.ctrlKey || e.metaKey) modifiers.push("CommandOrControl");
-            if (e.altKey) modifiers.push("Alt");
+
+            if (e.ctrlKey) modifiers.push("Control");
             if (e.shiftKey) modifiers.push("Shift");
+            if (e.altKey) modifiers.push("Alt");
+            if (e.metaKey) modifiers.push(isMac ? "Command" : "Super");
 
             let finalKey = "";
 
