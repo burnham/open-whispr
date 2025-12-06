@@ -67,16 +67,30 @@ export default function HotkeyRecorder({
             const parts = [...new Set([...modifiers, finalKey])].filter(Boolean);
             const accelerator = parts.join("+");
 
-            // Allow ANY combination. Let Electron/Backend decide if it's valid.
-            // We update the value in real-time as they type
+            // Validation per Supported Shortcuts docs:
+            // 1. Function keys (F1-F24) and Media keys are allowed without modifiers.
+            // 2. All other keys MUST have at least one modifier.
+            const isFunctionKey = /^F(1[0-2]|[1-9])$/.test(finalKey);
+            const isMediaKey = ["MediaPlayPause", "MediaNextTrack", "MediaPreviousTrack", "MediaStop", "VolumeUp", "VolumeDown", "VolumeMute"].includes(finalKey);
+            const hasModifier = modifiers.length > 0;
+
+            const isValid = hasModifier || isFunctionKey || isMediaKey;
+
+            // We update the value in real-time as they type, but only if it could potentially be valid
             if (parts.length > 0) {
                 onChange(accelerator);
             }
 
-            // If it has a final key (non-modifier), we consider it "done" and stop recording.
+            // If it has a final key (non-modifier), check invalidity
             if (finalKey) {
-                setIsRecording(false);
-                inputRef.current?.blur();
+                if (isValid) {
+                    setIsRecording(false);
+                    inputRef.current?.blur();
+                } else {
+                    // Keep recording, waiting for a modifier. 
+                    // Ideally we'd show a "Press a modifier" warning here, but for now we just don't "finish" the recording.
+                    // The user is forced to add a modifier or keep typing.
+                }
             }
         };
 
@@ -97,6 +111,7 @@ export default function HotkeyRecorder({
     // Format the display value
     const displayValue = value ? value.split("+").map(part => {
         if (part === "CommandOrControl") return "Ctrl";
+        if (part === "Super") return "Win";
         return part;
     }).join(" + ") : "";
 
@@ -130,8 +145,8 @@ export default function HotkeyRecorder({
                         value && !isRecording && "text-gray-900"
                     )}>
                         {isRecording
-                            ? t('settings.hotkey.pressKeys')
-                            : (displayValue || t('settings.hotkey.clickToRecord'))}
+                            ? t('settings.general.hotkey.pressKeys')
+                            : (displayValue || t('settings.general.hotkey.clickToRecord'))}
                     </span>
                 </div>
             </div>
@@ -140,7 +155,7 @@ export default function HotkeyRecorder({
                 <button
                     onClick={clearHotkey}
                     className="absolute right-3 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                    title={t('settings.hotkey.clear')}
+                    title={t('settings.general.hotkey.clear')}
                 >
                     <X size={16} />
                 </button>

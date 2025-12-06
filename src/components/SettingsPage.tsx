@@ -329,7 +329,7 @@ export default function SettingsPage({
         ]?.name || localReasoningProvider;
 
     showAlertDialog({
-      title: "Reasoning Settings Saved",
+      title: t('settings.general.reasoningSettingsSaved'),
       description: `AI text enhancement ${useReasoningModel ? "enabled" : "disabled"
         } with ${providerLabel
         } ${reasoningModel}`,
@@ -430,23 +430,23 @@ export default function SettingsPage({
 
       if (!result?.success) {
         showAlertDialog({
-          title: t('settings.hotkey.errorTitle'),
+          title: t('settings.general.hotkey.errorTitle'),
           description:
             result?.message ||
-            t('settings.hotkey.errorDesc'),
+            t('settings.general.hotkey.errorDesc'),
         });
         return;
       }
 
       showAlertDialog({
-        title: t('settings.hotkey.savedTitle'),
-        description: t('settings.hotkey.savedDesc', { key: formatHotkeyLabel(dictationKey) }),
+        title: t('settings.general.hotkey.savedTitle'),
+        description: t('settings.general.hotkey.savedDesc', { key: formatHotkeyLabel(dictationKey) }),
       });
     } catch (error) {
       console.error("Failed to update hotkey:", error);
       showAlertDialog({
         title: t('common.error'),
-        description: `${t('settings.hotkey.errorTitle')}: ${(error as Error).message}`,
+        description: `${t('settings.general.hotkey.errorTitle')}: ${(error as Error).message}`,
       });
     }
   };
@@ -730,7 +730,17 @@ export default function SettingsPage({
                   {t('settings.general.dictationHotkey')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
-                  {t('settings.general.dictationHotkeyDesc')}
+                  {t('settings.general.dictationHotkeyDesc')}{" "}
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.electronAPI.openExternal("https://github.com/burnham/open-whispr/blob/main/SUPPORTED_SHORTCUTS.md");
+                    }}
+                    className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center gap-1"
+                  >
+                    {t('common.learnMore', 'Learn more')} &rarr;
+                  </a>
                 </p>
               </div>
               <div className="space-y-4">
@@ -1142,8 +1152,8 @@ export default function SettingsPage({
                   onClick={() => {
                     setAgentName(agentName.trim());
                     showAlertDialog({
-                      title: t('common.success'),
-                      description: `Your agent is now named "${agentName.trim()}".`,
+                      title: t('settings.general.agentNameSaved'),
+                      description: t('settings.general.agentNameSavedDesc', { name: agentName.trim() }),
                     });
                   }}
                   disabled={!agentName.trim()}

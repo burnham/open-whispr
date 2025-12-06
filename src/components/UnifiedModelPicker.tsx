@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { Alert, AlertDescription } from "./ui/alert";
-import { 
-  RefreshCw, 
-  Download, 
-  Trash2, 
+import {
+  RefreshCw,
+  Download,
+  Trash2,
   AlertCircle,
   ExternalLink,
-  Globe 
+  Globe
 } from "lucide-react";
 import { useDialogs } from "../hooks/useDialogs";
 import { useToast } from "./ui/Toast";
@@ -117,11 +117,10 @@ export function UnifiedModelPickerCompact({
         <button
           key={model.value}
           onClick={() => onModelSelect(model.value)}
-          className={`w-full p-3 rounded-lg border-2 text-left transition-all ${
-            selectedModel === model.value
-              ? 'border-indigo-500 bg-indigo-50'
-              : 'border-gray-200 bg-white hover:border-gray-300'
-          }`}
+          className={`w-full p-3 rounded-lg border-2 text-left transition-all ${selectedModel === model.value
+            ? 'border-indigo-500 bg-indigo-50'
+            : 'border-gray-200 bg-white hover:border-gray-300'
+            }`}
         >
           <div className="flex items-center justify-between">
             <div>
@@ -202,7 +201,7 @@ export default function UnifiedModelPicker({
   const loadModels = useCallback(async () => {
     try {
       setLoadingModels(true);
-      
+
       if (modelType === 'whisper') {
         const result = await window.electronAPI.listWhisperModels();
         if (result.success) {
@@ -229,13 +228,13 @@ export default function UnifiedModelPicker({
         console.log('[UnifiedModelPicker] Loading LLM models...');
         const result = await window.electronAPI.modelGetAll();
         console.log('[UnifiedModelPicker] Got result:', result);
-        
+
         if (!result || !Array.isArray(result)) {
           console.error('[UnifiedModelPicker] Invalid result format:', result);
           setModels([]);
           return;
         }
-        
+
         const llmModels: Model[] = result.map((m: any) => ({
           ...m,
           type: 'llm' as const,
@@ -327,7 +326,7 @@ export default function UnifiedModelPicker({
       } else {
         await window.electronAPI.modelDownload(modelId);
       }
-      
+
       await loadModels();
     } catch (error: any) {
       if (!error.toString().includes("interrupted by user")) {
@@ -481,9 +480,8 @@ export default function UnifiedModelPicker({
             return (
               <div
                 key={modelId}
-                className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${
-                  isSelected ? styles.modelCard.selected : styles.modelCard.default
-                }`}
+                className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${isSelected ? styles.modelCard.selected : styles.modelCard.default
+                  }`}
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
@@ -540,10 +538,27 @@ export default function UnifiedModelPicker({
                       <span className="ml-1">Download</span>
                     </Button>
                   )}
+
                   {isDownloading && (
-                    <Button disabled size="sm" className={styles.buttons.download}>
-                      {`${Math.round(downloadProgress.percentage)}%`}
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button disabled size="sm" className={styles.buttons.download}>
+                        {`${Math.round(downloadProgress.percentage)}%`}
+                      </Button>
+                      <Button
+                        onClick={() => window.electronAPI.cancelWhisperDownload().then(res => {
+                          if (res.success) {
+                            setDownloadingModel(null);
+                            setDownloadProgress({ percentage: 0, downloadedBytes: 0, totalBytes: 0 });
+                          }
+                        })}
+                        size="sm"
+                        variant="destructive"
+                        className="h-8 px-2"
+                        title="Cancel Download"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </Button>
+                    </div>
                   )}
                 </div>
               </div>

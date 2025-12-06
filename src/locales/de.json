@@ -139,6 +139,21 @@
       "test_button": "Prompt mit AI testen",
       "test_processing": "Wird mit AI verarbeitet...",
       "ai_response": "AI-Antwort"
+    },
+    "custom": {
+      "endpoint": "Endpunkt",
+      "resetToDefault": "Auf Standard zurücksetzen",
+      "refreshModels": "Modelle aktualisieren",
+      "applyAndRefresh": "Anwenden & Aktualisieren",
+      "loadingModels": "Modelle werden geladen...",
+      "authentication": "Authentifizierung",
+      "availableModels": "Verfügbare Modelle",
+      "noModels": "Keine Modelle von diesem Endpunkt zurückgegeben.",
+      "processing": "Wir fragen {{url}} nach verfügbaren Modellen ab."
+    },
+    "modelSelector": {
+      "selectModel": "Modell auswählen",
+      "apiConfiguration": "API-Konfiguration"
     }
   },
   "controlPanel": {

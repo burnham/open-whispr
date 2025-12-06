@@ -12,6 +12,9 @@
       },
       "appUpdates": "Actualizaciones",
       "appUpdatesDesc": "Mantén OpenWhispr actualizado con las últimas funciones y mejoras.",
+      "reasoningSettingsSaved": "Configuración de Razonamiento Guardada",
+      "agentNameSaved": "Nombre del Agente Guardado",
+      "agentNameSavedDesc": "Tu agente ahora se llama \"{{name}}\"",
       "currentVersion": "Versión Actual",
       "checkForUpdates": "Buscar Actualizaciones",
       "updateAvailable": "Actualización Disponible",
@@ -145,6 +148,21 @@
       "test_button": "Probar Prompt con IA",
       "test_processing": "Procesando con IA...",
       "ai_response": "Respuesta de IA"
+    },
+    "custom": {
+      "endpoint": "Endpoint",
+      "resetToDefault": "Restaurar Predeterminado",
+      "refreshModels": "Refrescar Modelos",
+      "applyAndRefresh": "Aplicar y Refrescar",
+      "loadingModels": "Cargando modelos...",
+      "authentication": "Autenticación",
+      "availableModels": "Modelos Disponibles",
+      "noModels": "No se encontraron modelos en este endpoint.",
+      "processing": "Consultaremos {{url}} para ver modelos disponibles."
+    },
+    "modelSelector": {
+      "selectModel": "Seleccionar Modelo",
+      "apiConfiguration": "Configuración API"
     }
   },
   "controlPanel": {

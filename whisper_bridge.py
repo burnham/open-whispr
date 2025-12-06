@@ -384,6 +384,20 @@ def delete_model(model_name="base"):
                 "success": False
             }
     except Exception as e:
+        # Force GC and try again if access error
+        gc.collect()
+        try:
+            if os.path.exists(model_file):
+                os.remove(model_file)
+                return {
+                    "model": model_name,
+                    "deleted": True,
+                    "path": model_file,
+                    "success": True
+                }
+        except:
+            pass
+            
         return {
             "model": model_name,
             "deleted": False,

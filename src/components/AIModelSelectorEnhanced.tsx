@@ -645,7 +645,7 @@ export default function AIModelSelectorEnhanced({
                               variant="outline"
                               onClick={handleResetCustomBase}
                             >
-                              Reset to Default
+                              {t('settings.custom.resetToDefault')}
                             </Button>
                             <Button
                               type="button"
@@ -654,44 +654,44 @@ export default function AIModelSelectorEnhanced({
                               onClick={handleRefreshCustomModels}
                               disabled={customModelsLoading || (!trimmedCustomBase && !hasSavedCustomBase)}
                             >
-                              {customModelsLoading ? 'Loading models...' : isCustomBaseDirty ? 'Apply & Refresh' : 'Refresh Models'}
+                              {customModelsLoading ? t('settings.custom.loadingModels') : isCustomBaseDirty ? t('settings.custom.applyAndRefresh') : t('settings.custom.refreshModels')}
                             </Button>
                           </div>
                           {isCustomBaseDirty && (
-                            <p className="text-xs text-amber-600">Apply the new base URL to refresh models.</p>
+                            <p className="text-xs text-amber-600">{t('settings.custom.applyAndRefresh')}</p>
                           )}
                           <p className="text-xs text-gray-600">
-                            We'll query <code>{hasCustomBase ? `${effectiveReasoningBase}/models` : `${defaultOpenAIBase}/models`}</code> for available models.
+                            {t('settings.custom.processing', { url: hasCustomBase ? `${effectiveReasoningBase}/models` : `${defaultOpenAIBase}/models` })}
                           </p>
                         </div>
 
                         <div className="space-y-3 pt-4 border-t border-gray-200">
-                          <h4 className="font-medium text-gray-900">Authentication</h4>
+                          <h4 className="font-medium text-gray-900">{t('settings.custom.authentication')}</h4>
                           <ApiKeyInput
                             apiKey={openaiApiKey}
                             setApiKey={setOpenaiApiKey}
-                            helpText="Optional. Added as a Bearer token for your custom endpoint."
+                            helpText={t('settings.transcription.getApiKey')}
                           />
                         </div>
 
                         <div className="space-y-3 pt-4 border-t border-gray-200">
-                          <h4 className="text-sm font-medium text-gray-700">Available Models</h4>
+                          <h4 className="text-sm font-medium text-gray-700">{t('settings.custom.availableModels')}</h4>
                           {!hasCustomBase && (
                             <p className="text-xs text-amber-600">
-                              Enter a base URL to load models.
+                              {t('settings.transcription.customBaseUrl')}
                             </p>
                           )}
                           {hasCustomBase && (
                             <>
                               {customModelsLoading && (
-                                <p className="text-xs text-blue-600">Fetching model list...</p>
+                                <p className="text-xs text-blue-600">{t('settings.custom.loadingModels')}</p>
                               )}
                               {customModelsError && (
                                 <p className="text-xs text-red-600">{customModelsError}</p>
                               )}
                               {!customModelsLoading && !customModelsError && customModelOptions.length === 0 && (
                                 <p className="text-xs text-amber-600">
-                                  No models returned by this endpoint.
+                                  {t('settings.custom.noModels')}
                                 </p>
                               )}
                             </>
@@ -707,7 +707,7 @@ export default function AIModelSelectorEnhanced({
                   ) : (
                     <>
                       <div className="space-y-3">
-                        <h4 className="text-sm font-medium text-gray-700">Select Model</h4>
+                        <h4 className="text-sm font-medium text-gray-700">{t('settings.modelSelector.selectModel')}</h4>
                         <UnifiedModelPickerCompact
                           models={selectedCloudModels}
                           selectedModel={reasoningModel}
@@ -718,7 +718,7 @@ export default function AIModelSelectorEnhanced({
                       <div className="mt-4 pt-4 border-t border-gray-200">
                         {selectedCloudProvider === 'openai' && (
                           <div className="space-y-3">
-                            <h4 className="font-medium text-gray-900">API Configuration</h4>
+                            <h4 className="font-medium text-gray-900">{t('settings.modelSelector.apiConfiguration')}</h4>
                             <ApiKeyInput
                               apiKey={openaiApiKey}
                               setApiKey={setOpenaiApiKey}
