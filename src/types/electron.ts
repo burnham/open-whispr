@@ -207,14 +207,14 @@ declare global {
       onModelDownloadProgress: (
         callback: (event: any, data: any) => void
       ) => (() => void) | void;
-      
+
       // Local reasoning
       processLocalReasoning: (text: string, modelId: string, agentName: string | null, config: any) => Promise<{ success: boolean; text?: string; error?: string }>;
       checkLocalReasoningAvailable: () => Promise<boolean>;
-      
+
       // Anthropic reasoning
       processAnthropicReasoning: (text: string, modelId: string, agentName: string | null, config: any) => Promise<{ success: boolean; text?: string; error?: string }>;
-      
+
       // llama.cpp management
       llamaCppCheck: () => Promise<{ isInstalled: boolean; version?: string }>;
       llamaCppInstall: () => Promise<{ success: boolean; error?: string }>;
@@ -226,6 +226,7 @@ declare global {
       windowClose: () => Promise<void>;
       windowIsMaximized: () => Promise<boolean>;
       getPlatform: () => string;
+      platform: string;
       startWindowDrag: () => Promise<void>;
       stopWindowDrag: () => Promise<void>;
       setMainWindowInteractivity: (interactive: boolean) => Promise<void>;
@@ -273,18 +274,18 @@ declare global {
 
       // Hotkey management
       updateHotkey: (key: string) => Promise<{ success: boolean; message: string }>;
-      
+
       // Gemini API key management
       getGeminiKey: () => Promise<string | null>;
       saveGeminiKey: (key: string) => Promise<void>;
-      
+
       // Debug logging
       logReasoning?: (stage: string, details: any) => Promise<void>;
-      
+
       // FFmpeg availability
       checkFFmpegAvailability: () => Promise<boolean>;
     };
-    
+
     api?: {
       sendDebugLog: (message: string) => void;
     };
