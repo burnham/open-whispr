@@ -158,9 +158,14 @@ def get_expected_model_size(model_name):
     }
     return approximate_sizes.get(model_name, 100 * 1024 * 1024)
 
+def get_whisper_cache_dir():
+    """Get the Whisper cache directory following the library's logic"""
+    default = os.path.join(os.path.expanduser("~"), ".cache")
+    return os.path.join(os.getenv("XDG_CACHE_HOME", default), "whisper")
+
 def monitor_download_progress(model_name, expected_size, stop_event):
     """Monitor download progress by watching file size growth"""
-    cache_dir = os.path.expanduser("~/.cache/whisper")
+    cache_dir = get_whisper_cache_dir()
     model_url = whisper._MODELS[model_name]
     model_file = os.path.join(cache_dir, os.path.basename(model_url))
     
@@ -229,7 +234,7 @@ def download_model(model_name="base"):
     
     try:
         # Check if model is already downloaded
-        cache_dir = os.path.expanduser("~/.cache/whisper")
+        cache_dir = get_whisper_cache_dir()
         model_url = whisper._MODELS[model_name]
         model_file = os.path.join(cache_dir, os.path.basename(model_url))
         
@@ -309,7 +314,7 @@ def download_model(model_name="base"):
 def check_model_status(model_name="base"):
     """Check if a model is already downloaded"""
     try:
-        cache_dir = os.path.expanduser("~/.cache/whisper")
+        cache_dir = get_whisper_cache_dir()
         model_url = whisper._MODELS[model_name]
         model_file = os.path.join(cache_dir, os.path.basename(model_url))
         
@@ -327,6 +332,7 @@ def check_model_status(model_name="base"):
             return {
                 "model": model_name,
                 "downloaded": False,
+                "path": model_file, # Return path even if not found
                 "success": True
             }
     except Exception as e:
@@ -347,14 +353,14 @@ def list_models():
     
     return {
         "models": model_info,
-        "cache_dir": os.path.expanduser("~/.cache/whisper"),
+        "cache_dir": get_whisper_cache_dir(),
         "success": True
     }
 
 def delete_model(model_name="base"):
     """Delete a downloaded Whisper model"""
     try:
-        cache_dir = os.path.expanduser("~/.cache/whisper")
+        cache_dir = get_whisper_cache_dir()
         model_url = whisper._MODELS[model_name]
         model_file = os.path.join(cache_dir, os.path.basename(model_url))
         
@@ -364,6 +370,7 @@ def delete_model(model_name="base"):
             return {
                 "model": model_name,
                 "deleted": True,
+                "path": model_file,
                 "freed_bytes": file_size,
                 "freed_mb": round(file_size / (1024 * 1024), 1),
                 "success": True
@@ -372,6 +379,7 @@ def delete_model(model_name="base"):
             return {
                 "model": model_name,
                 "deleted": False,
+                "path": model_file,
                 "error": "Model not found",
                 "success": False
             }
