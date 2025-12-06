@@ -29,6 +29,7 @@ export interface ApiKeySettings {
   openaiApiKey: string;
   anthropicApiKey: string;
   geminiApiKey: string;
+  groqApiKey: string;
 }
 
 export function useSettings() {
@@ -157,6 +158,15 @@ export function useSettings() {
     }
   );
 
+  const [groqApiKey, setGroqApiKey] = useLocalStorage(
+    "groqApiKey",
+    "",
+    {
+      serialize: String,
+      deserialize: String,
+    }
+  );
+
   // Hotkey
   const [dictationKey, setDictationKey] = useLocalStorage("dictationKey", "", {
     serialize: String,
@@ -218,8 +228,10 @@ export function useSettings() {
         setAnthropicApiKey(keys.anthropicApiKey);
       if (keys.geminiApiKey !== undefined)
         setGeminiApiKey(keys.geminiApiKey);
+      if (keys.groqApiKey !== undefined)
+        setGroqApiKey(keys.groqApiKey);
     },
-    [setOpenaiApiKey, setAnthropicApiKey, setGeminiApiKey]
+    [setOpenaiApiKey, setAnthropicApiKey, setGeminiApiKey, setGroqApiKey]
   );
 
   return {
@@ -237,6 +249,7 @@ export function useSettings() {
     openaiApiKey,
     anthropicApiKey,
     geminiApiKey,
+    groqApiKey,
     dictationKey,
     selectedMicrophone,
     setUseLocalWhisper,
@@ -268,6 +281,7 @@ export function useSettings() {
     setOpenaiApiKey,
     setAnthropicApiKey,
     setGeminiApiKey,
+    setGroqApiKey,
     setDictationKey,
     setSelectedMicrophone,
     updateTranscriptionSettings,

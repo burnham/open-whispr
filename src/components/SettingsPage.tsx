@@ -66,6 +66,7 @@ export default function SettingsPage({
     openaiApiKey,
     anthropicApiKey,
     geminiApiKey,
+    groqApiKey,
     dictationKey,
     setUseLocalWhisper,
     setWhisperModel,
@@ -81,6 +82,7 @@ export default function SettingsPage({
     setOpenaiApiKey,
     setAnthropicApiKey,
     setGeminiApiKey,
+    setGroqApiKey,
     setDictationKey,
     selectedMicrophone,
     setSelectedMicrophone,
@@ -1039,6 +1041,31 @@ export default function SettingsPage({
                   onModelSelect={setWhisperModel}
                   variant="settings"
                 />
+
+                <div className="mt-4 pt-4 border-t border-purple-200">
+                  <h5 className="text-sm font-medium text-purple-900 mb-2">Groq Cloud Acceleration (Optional)</h5>
+                  <ApiKeyInput
+                    apiKey={groqApiKey}
+                    setApiKey={setGroqApiKey}
+                    placeholder="gsk_..."
+                    helpText={
+                      <>
+                        Speeds up "Local" transcription using Groq Cloud.{' '}
+                        <a
+                          href="https://console.groq.com/keys"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-purple-600 underline"
+                        >
+                          Get Key
+                        </a>
+                      </>
+                    }
+                  />
+                  <p className="text-xs text-purple-700 mt-1">
+                    If provided, audio will be processed by Groq's ultra-fast Whisper API instead of your local CPU/GPU.
+                  </p>
+                </div>
               </div>
             )}
 
@@ -1068,6 +1095,14 @@ export default function SettingsPage({
 
                 if (!useLocalWhisper && openaiApiKey.trim()) {
                   updateApiKeys({ openaiApiKey });
+                }
+
+                if (useLocalWhisper) {
+                  // Save Groq Key if Local Whisper is used
+                  if (groqApiKey !== undefined) {
+                    updateApiKeys({ groqApiKey });
+                    window.electronAPI?.saveGroqKey(groqApiKey);
+                  }
                 }
 
                 const descriptionParts = [
