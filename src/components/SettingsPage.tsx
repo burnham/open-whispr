@@ -800,14 +800,16 @@ export default function SettingsPage({
                   <Shield className="mr-2 h-4 w-4" />
                   {t('settings.general.testAccess')}
                 </Button>
-                <Button
-                  onClick={resetAccessibilityPermissions}
-                  variant="secondary"
-                  className="w-full"
-                >
-                  <span className="mr-2">⚙️</span>
-                  {t('settings.general.fixPermissions')}
-                </Button>
+                {window.electronAPI?.platform === 'darwin' && (
+                  <Button
+                    onClick={resetAccessibilityPermissions}
+                    variant="secondary"
+                    className="w-full"
+                  >
+                    <span className="mr-2">⚙️</span>
+                    {t('settings.general.fixPermissions')}
+                  </Button>
+                )}
               </div>
             </div>
 
