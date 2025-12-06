@@ -430,23 +430,23 @@ export default function SettingsPage({
 
       if (!result?.success) {
         showAlertDialog({
-          title: "Hotkey Not Saved",
+          title: t('settings.hotkey.errorTitle'),
           description:
             result?.message ||
-            "This key could not be registered. Please choose a different key.",
+            t('settings.hotkey.errorDesc'),
         });
         return;
       }
 
       showAlertDialog({
-        title: "Key Saved",
-        description: `Dictation key saved: ${formatHotkeyLabel(dictationKey)}`,
+        title: t('settings.hotkey.savedTitle'),
+        description: t('settings.hotkey.savedDesc', { key: formatHotkeyLabel(dictationKey) }),
       });
     } catch (error) {
       console.error("Failed to update hotkey:", error);
       showAlertDialog({
-        title: "Error",
-        description: `Failed to update hotkey: ${error.message}`,
+        title: t('common.error'),
+        description: `${t('settings.hotkey.errorTitle')}: ${(error as Error).message}`,
       });
     }
   };
@@ -457,7 +457,7 @@ export default function SettingsPage({
     showConfirmDialog({
       title: "Remove downloaded models?",
       description:
-        `This deletes all locally cached Whisper models (${cachePathHint}) and frees disk space. You can download them again from the model picker.`,
+        `This deletes all locally cached Whisper models (${cachePathHint}) and frees disk space.You can download them again from the model picker.`,
       confirmText: "Delete Models",
       variant: "destructive",
       onConfirm: () => {
@@ -566,7 +566,7 @@ export default function SettingsPage({
                         }));
                         showAlertDialog({
                           title: t('settings.general.updateAvailable'),
-                          description: `${t('settings.general.updateAvailable')}: v${result.version || 'new version'}`,
+                          description: `${t('settings.general.updateAvailable')}: v${result.version || 'new version'} `,
                         });
                       } else {
                         // If updateAvailable is true but versions match, treat as up to date (reinstall scenario handled elsewhere if needed)
@@ -578,7 +578,7 @@ export default function SettingsPage({
                     } catch (error: any) {
                       showAlertDialog({
                         title: t('common.error'),
-                        description: `Error: ${error.message}`,
+                        description: `Error: ${error.message} `,
                       });
                     } finally {
                       setCheckingForUpdates(false);
@@ -612,7 +612,7 @@ export default function SettingsPage({
                           setDownloadingUpdate(false);
                           showAlertDialog({
                             title: t('common.error'),
-                            description: `Failed: ${error.message}`,
+                            description: `Failed: ${error.message} `,
                           });
                         }
                       }}
@@ -627,7 +627,7 @@ export default function SettingsPage({
                       ) : (
                         <>
                           <Download size={16} className="mr-2" />
-                          {t('settings.general.downloadUpdate')}{updateInfo.version ? ` v${updateInfo.version}` : ''}
+                          {t('settings.general.downloadUpdate')}{updateInfo.version ? ` v${updateInfo.version} ` : ''}
                         </>
                       )}
                     </Button>
@@ -637,7 +637,7 @@ export default function SettingsPage({
                         <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-200">
                           <div
                             className="h-full bg-green-600 transition-all duration-200"
-                            style={{ width: `${Math.min(100, Math.max(0, updateDownloadProgress))}%` }}
+                            style={{ width: `${Math.min(100, Math.max(0, updateDownloadProgress))}% ` }}
                           />
                         </div>
                         <p className="text-xs text-neutral-600 text-right">
@@ -679,7 +679,7 @@ export default function SettingsPage({
                             setInstallInitiated(false);
                             showAlertDialog({
                               title: t('common.error'),
-                              description: `Failed: ${error.message}`,
+                              description: `Failed: ${error.message} `,
                             });
                           }
                         },
@@ -894,7 +894,7 @@ export default function SettingsPage({
                           .catch((error) => {
                             showAlertDialog({
                               title: t('common.error'),
-                              description: `Failed: ${error.message}`,
+                              description: `Failed: ${error.message} `,
                             });
                           });
                       },

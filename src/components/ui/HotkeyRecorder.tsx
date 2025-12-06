@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Keyboard as KeyboardIcon, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "../lib/utils";
 
 interface HotkeyRecorderProps {
@@ -13,6 +14,7 @@ export default function HotkeyRecorder({
     onChange,
     className,
 }: HotkeyRecorderProps) {
+    const { t } = useTranslation();
     const [isRecording, setIsRecording] = useState(false);
     const [currentCombo, setCurrentCombo] = useState<Set<string>>(new Set());
     const inputRef = useRef<HTMLDivElement>(null);
@@ -74,11 +76,11 @@ export default function HotkeyRecorder({
             const parts = [...new Set([...modifiers, finalKey])].filter(Boolean);
             const accelerator = parts.join("+");
 
-            // VALIDATION: Enforce at least one modifier if a key is pressed
-            if (finalKey && modifiers.length === 0) {
-                // Invalid: Single key without modifier
-                // We do NOT stop recording, and we do NOT call onChange
-                // Optionally could set an error state here
+            // VALIDATION: Enforce at least one modifier if a key is pressed, UNLESS it's a Function key (F1-F12) or specific keys
+            const isFunctionKey = /^F[1-9][0-2]?$/.test(finalKey);
+
+            if (finalKey && modifiers.length === 0 && !isFunctionKey) {
+                // Invalid: Single key without modifier (except F-keys)
                 return;
             }
 
@@ -86,8 +88,15 @@ export default function HotkeyRecorder({
                 onChange(accelerator);
             }
 
-            // If a non-modifier key was pressed AND we have modifiers, stop recording
-            if (finalKey && modifiers.length > 0) {
+            // If a non-modifier key was pressed AND we have modifiers, OR if we want to allow single keys (but better to enforce mod+key)
+            // For global shortcuts, Electron generally wants Modifier+Key.
+            // If finalKey is empty (meaning only modifiers pressed), do NOT save yet.
+            if (!finalKey) {
+                return;
+            }
+
+            if (parts.length > 0 && modifiers.length > 0) {
+                onChange(accelerator);
                 setIsRecording(false);
                 inputRef.current?.blur();
             }
@@ -149,8 +158,8 @@ export default function HotkeyRecorder({
                         value && !isRecording && "text-gray-900"
                     )}>
                         {isRecording
-                            ? "Press keys (e.g. Ctrl + Space)..."
-                            : (displayValue || "Click to record hotkey")}
+                            ? t('settings.hotkey.pressKeys')
+                            : (displayValue || t('settings.hotkey.clickToRecord'))}
                     </span>
                 </div>
             </div>
@@ -159,7 +168,7 @@ export default function HotkeyRecorder({
                 <button
                     onClick={clearHotkey}
                     className="absolute right-3 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                    title="Clear hotkey"
+                    title={t('settings.hotkey.clear')}
                 >
                     <X size={16} />
                 </button>

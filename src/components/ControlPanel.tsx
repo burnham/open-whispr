@@ -17,6 +17,7 @@ import {
   removeTranscription as removeFromStore,
   clearTranscriptions as clearStoreTranscriptions,
 } from "../stores/transcriptionStore";
+import { formatHotkeyLabel } from "../utils/hotkeys";
 
 import React, { Component, ErrorInfo, ReactNode } from "react";
 
@@ -215,7 +216,7 @@ export default function ControlPanel() {
         onOpenChange={hideAlertDialog}
         title={alertDialog.title}
         description={alertDialog.description}
-        onOk={() => {}}
+        onOk={() => { }}
       />
 
       <TitleBar
@@ -309,11 +310,11 @@ export default function ControlPanel() {
                     <ol className="text-sm text-neutral-600 text-left space-y-1">
                       <li>1. {t('controlPanel.step1')}</li>
                       <li>
-                        2. {t('controlPanel.step2').replace('{key}', hotkey)}
+                        2. {t('controlPanel.step2').replace('{key}', formatHotkeyLabel(hotkey))}
                       </li>
                       <li>3. {t('controlPanel.step3')}</li>
                       <li>
-                        4. {t('controlPanel.step4').replace('{key}', hotkey)}
+                        4. {t('controlPanel.step4').replace('{key}', formatHotkeyLabel(hotkey))}
                       </li>
                       <li>5. {t('controlPanel.step5')}</li>
                     </ol>
