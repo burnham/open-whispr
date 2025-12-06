@@ -96,13 +96,13 @@ class MenuManager {
               label: "Learn More",
               click: async () => {
                 const { shell } = require("electron");
-                await shell.openExternal("https://github.com/HeroTools/open-whispr");
+                await shell.openExternal("https://github.com/burnham/open-whispr");
               },
             },
           ],
         },
       ];
-      
+
       const menu = Menu.buildFromTemplate(template);
       Menu.setApplicationMenu(menu);
     } else {
@@ -140,7 +140,7 @@ class MenuManager {
           ],
         },
       ];
-      
+
       const menu = Menu.buildFromTemplate(template);
       controlPanelWindow.setMenu(menu);
     }

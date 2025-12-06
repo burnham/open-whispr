@@ -33,7 +33,7 @@ export default function SupportDropdown({ className }: SupportDropdownProps) {
   const handleSubmitBug = async () => {
     try {
       const result = await window.electronAPI?.openExternal(
-        "https://github.com/HeroTools/open-whispr/issues"
+        "https://github.com/burnham/open-whispr/issues"
       );
       if (!result?.success) {
         console.error("Failed to open GitHub issues:", result?.error);
