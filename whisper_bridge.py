@@ -406,16 +406,84 @@ def delete_model(model_name="base"):
         }
 
 def transcribe_audio(audio_path, model_name="base", language=None):
-    """Transcribe audio file using Whisper with optimizations"""
+    """Transcribe audio file using Whisper with optimizations and performance tracking"""
     
     if not os.path.exists(audio_path):
         return {"error": f"Audio file not found: {audio_path}", "success": False}
     
     try:
+        # Import performance logger
+        from performance_logger import PerformanceLogger, StepTimer
+        
+        # Initialize performance logger
+        perf_logger = PerformanceLogger(console_output=True)
+        perf_logger.start_session(audio_path)
+        
+        # Check for Groq API Key
+        groq_api_key = os.environ.get("GROQ_API_KEY")
+        
+        # PREFER GROQ if key is present (Cloud Acceleration)
+        if groq_api_key:
+            try:
+                from groq import Groq
+                
+                with StepTimer(perf_logger, "groq_client_init"):
+                    client = Groq(api_key=groq_api_key)
+                
+                # Use large-v3-turbo for Groq by default if not specified or if local model name passed
+                # If user selected "turbo" locally, mapped to "whisper-large-v3-turbo"
+                groq_model = "whisper-large-v3-turbo"
+                
+                options = {
+                    "model": groq_model,
+                    "response_format": "json"
+                }
+
+                if language:
+                    options["language"] = language
+                
+                with StepTimer(perf_logger, "groq_transcription", model=groq_model):
+                    with open(audio_path, "rb") as file:
+                        transcription = client.audio.transcriptions.create(
+                            file=(os.path.basename(audio_path), file.read()),
+                            **options
+                        )
+                
+                text = transcription.text.strip()
+                # Groq generic response might not have language detected in simple JSON, 
+                # but let's try to get it if verbose_json was used (we used json here for speed)
+                detected_language = language or "unknown" 
+                
+                metrics = perf_logger.end_session(success=True)
+                
+                return {
+                    "text": text,
+                    "language": detected_language,
+                    "provider": "groq",
+                    "model": groq_model,
+                    "success": True,
+                    "performance_metrics": {
+                        "total_time_ms": metrics["total_time_ms"],
+                        "file_size_mb": metrics["file_size_mb"],
+                        "steps": metrics["steps"],
+                        "breakdown_percent": metrics.get("breakdown_percent", {})
+                    }
+                }
+                
+            except ImportError:
+                print("Groq library not found, falling back to local Whisper", file=sys.stderr)
+            except Exception as e:
+                print(f"Groq transcription failed: {e}, falling back to local Whisper", file=sys.stderr)
+                # Fallthrough to local whisper
+        
+        # LOCAL WHISPER FALLBACK
+        
         # Load model (uses cache for performance)
-        model = load_model(model_name)
-        if model is None:
-            return {"error": "Failed to load Whisper model", "success": False}
+        with StepTimer(perf_logger, "model_loading", model=model_name):
+            model = load_model(model_name)
+            if model is None:
+                perf_logger.end_session(success=False, error="Failed to load Whisper model")
+                return {"error": "Failed to load Whisper model", "success": False}
         
         options = {
             "fp16": False,
@@ -424,18 +492,36 @@ def transcribe_audio(audio_path, model_name="base", language=None):
         if language:
             options["language"] = language
             
-        result = model.transcribe(audio_path, **options)
+        with StepTimer(perf_logger, "transcription", model=model_name):
+            result = model.transcribe(audio_path, **options)
         
         text = result.get("text", "").strip()
-        language = result.get("language", "unknown")
+        detected_language = result.get("language", "unknown")
+        
+        metrics = perf_logger.end_session(success=True)
         
         return {
             "text": text,
-            "language": language,
-            "success": True
+            "language": detected_language,
+            "provider": "local",
+            "model": model_name,
+            "success": True,
+            "performance_metrics": {
+                "total_time_ms": metrics["total_time_ms"],
+                "file_size_mb": metrics["file_size_mb"],
+                "steps": metrics["steps"],
+                "breakdown_percent": metrics.get("breakdown_percent", {})
+            }
         }
         
     except Exception as e:
+        # Try to log error if logger exists
+        try:
+            if 'perf_logger' in locals():
+                perf_logger.end_session(success=False, error=str(e))
+        except:
+            pass
+            
         return {
             "error": str(e),
             "success": False
