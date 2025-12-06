@@ -70,12 +70,20 @@ export default function HotkeyRecorder({
             const parts = [...new Set([...modifiers, finalKey])].filter(Boolean);
             const accelerator = parts.join("+");
 
-            if (parts.length > 0) {
+            // VALIDATION: Enforce at least one modifier if a key is pressed
+            if (finalKey && modifiers.length === 0) {
+                // Invalid: Single key without modifier
+                // We do NOT stop recording, and we do NOT call onChange
+                // Optionally could set an error state here
+                return;
+            }
+
+            if (parts.length > 0 && modifiers.length > 0) {
                 onChange(accelerator);
             }
 
-            // If a non-modifier key was pressed, stop recording
-            if (finalKey) {
+            // If a non-modifier key was pressed AND we have modifiers, stop recording
+            if (finalKey && modifiers.length > 0) {
                 setIsRecording(false);
                 inputRef.current?.blur();
             }
@@ -137,7 +145,7 @@ export default function HotkeyRecorder({
                         value && !isRecording && "text-gray-900"
                     )}>
                         {isRecording
-                            ? "Press keys..."
+                            ? "Press keys (e.g. Ctrl + Space)..."
                             : (displayValue || "Click to record hotkey")}
                     </span>
                 </div>
