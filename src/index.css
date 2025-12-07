@@ -2,57 +2,86 @@
 
 :root {
   /* OpenWhispr Elegant Theme - Turquoise, Brown, Cream */
-  --color-primary: #0CA5B0; /* Turquoise */
+  --color-primary: #0CA5B0;
+  /* Turquoise */
   --color-primary-foreground: #ffffff;
-  
-  --color-secondary: #F8F4E4; /* Beige */
-  --color-secondary-foreground: #4E3F30; /* Brown */
-  
-  --color-muted: #F8F4E4; /* Beige */
-  --color-muted-foreground: #A5B3AA; /* Grey */
-  
-  --color-accent: #4E3F30; /* Brown */
-  --color-accent-foreground: #FEFEEB; /* Cream */
-  
+
+  --color-secondary: #F8F4E4;
+  /* Beige */
+  --color-secondary-foreground: #4E3F30;
+  /* Brown */
+
+  --color-muted: #F8F4E4;
+  /* Beige */
+  --color-muted-foreground: #A5B3AA;
+  /* Grey */
+
+  --color-accent: #4E3F30;
+  /* Brown */
+  --color-accent-foreground: #FEFEEB;
+  /* Cream */
+
   --color-destructive: #dc2626;
   --color-destructive-foreground: #ffffff;
-  
-  --color-border: #A5B3AA; /* Grey */
+
+  --color-border: #A5B3AA;
+  /* Grey */
   --color-input: #ffffff;
   --color-ring: #0CA5B0;
-  
-  --color-background: #FEFEEB; /* Cream */
-  --color-foreground: #333333; /* Dark Grey for text elegance */
-  
-  --color-card: #F8F4E4; /* Beige */
+
+  --color-background: #FEFEEB;
+  /* Cream */
+  --color-foreground: #333333;
+  /* Dark Grey for text elegance */
+
+  --color-card: #F8F4E4;
+  /* Beige */
   --color-card-foreground: #333333;
-  
+
   --color-popover: #F8F4E4;
   --color-popover-foreground: #333333;
-  
+
   --color-link: #0CA5B0;
   --radius: 0.5rem;
 }
 
 .dark {
-  /* Dark mode - kept as fallback/neutral for now until specific dark palette provided */
-  --color-background: oklch(0.08 0 0);
-  --color-foreground: oklch(0.95 0 0);
-  --color-card: oklch(0.12 0 0);
-  --color-card-foreground: oklch(0.95 0 0);
-  --color-popover: oklch(0.12 0 0);
-  --color-popover-foreground: oklch(0.95 0 0);
-  --color-primary: #0CA5B0; /* Keep turquoise brand */
-  --color-primary-foreground: oklch(0.985 0 0);
-  --color-secondary: oklch(0.18 0 0);
-  --color-secondary-foreground: oklch(0.9 0 0);
-  --color-muted: oklch(0.15 0 0);
-  --color-muted-foreground: oklch(0.6 0 0);
+  /* OpenWhispr Elegant Dark - Coffee, Cream, Turquoise */
+  --color-background: #2A241F;
+  /* Dark Coffee */
+  --color-foreground: #FEFEEB;
+  /* Cream Text */
+
+  --color-card: #3E362E;
+  /* Lighter Coffee */
+  --color-card-foreground: #FEFEEB;
+
+  --color-popover: #3E362E;
+  --color-popover-foreground: #FEFEEB;
+
+  --color-primary: #0CA5B0;
+  /* Turquoise (Brand) */
+  --color-primary-foreground: #FFFFFF;
+
+  --color-secondary: #4E3F30;
+  /* Medium Brown */
+  --color-secondary-foreground: #FEFEEB;
+
+  --color-muted: #3E362E;
+  --color-muted-foreground: #A5B3AA;
+  /* Grey Muted */
+
   --color-accent: #0CA5B0;
-  --color-accent-foreground: oklch(0.985 0 0);
-  --color-destructive: oklch(0.7 0.22 25);
-  --color-border: oklch(0.22 0 0);
-  --color-input: oklch(0.18 0 0);
+  /* Turquoise Accent */
+  --color-accent-foreground: #FFFFFF;
+
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
+  --color-border: #4E3F30;
+  /* Brown Border */
+  --color-input: #3E362E;
+  /* Card background for inputs */
   --color-ring: #0CA5B0;
 }
 
@@ -60,7 +89,7 @@
   * {
     @apply border-gray-200 outline-indigo-500/50;
   }
-  
+
   body {
     @apply text-gray-900;
     margin: 0;
@@ -69,9 +98,11 @@
     font-feature-settings: "liga" 1, "kern" 1;
     text-rendering: optimizeLegibility;
   }
-  
+
   /* Electron specific styles */
-  html, body, #root {
+  html,
+  body,
+  #root {
     background-color: transparent !important;
   }
 }
@@ -93,7 +124,12 @@
   font-style: italic;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -122,7 +158,8 @@ svg:hover,
 }
 
 /* Embossed paper-like input styling */
-input, textarea {
+input,
+textarea {
   border-radius: 8px;
   transition: all 0.2s ease;
   font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -130,26 +167,30 @@ input, textarea {
 }
 
 /* Light mode inputs - embossed parchment */
-:root input, :root textarea {
+:root input,
+:root textarea {
   background-color: #F9F6F1;
   border: 1px solid #DDD4C7;
   color: #2B1F14;
 }
 
-:root input:focus, :root textarea:focus {
+:root input:focus,
+:root textarea:focus {
   border-color: #C0A77D;
   box-shadow: 0 0 0 2px rgba(192, 167, 125, 0.2), inset 0 1px 3px rgba(43, 31, 20, 0.1);
   background-color: #FFFFFF;
 }
 
 /* Dark mode inputs */
-.dark input, .dark textarea {
+.dark input,
+.dark textarea {
   background-color: oklch(0.15 0 0);
   border: 1px solid oklch(0.25 0 0);
   color: oklch(0.9 0 0);
 }
 
-.dark input:focus, .dark textarea:focus {
+.dark input:focus,
+.dark textarea:focus {
   border-color: oklch(0.55 0.25 250);
   box-shadow: 0 0 0 2px oklch(0.55 0.25 250 / 0.2);
 }

@@ -47,6 +47,7 @@
       "active": "Active",
       "resetOnboarding": "Reset Onboarding",
       "cleanAppData": "Clean App Data",
+      "preferredTheme": "Choose your preferred theme",
       "interfaceLanguage": "Interface Language",
       "interfaceLanguageDesc": "Choose your preferred language for the application interface.",
       "localModelStorage": "Local Model Storage",

@@ -47,6 +47,7 @@
       "active": "Activo",
       "resetOnboarding": "Reiniciar Bienvenida",
       "cleanAppData": "Borrar Datos App",
+      "preferredTheme": "Elige tu tema preferido",
       "interfaceLanguage": "Idioma de Interfaz",
       "interfaceLanguageDesc": "Elige el idioma preferido para la aplicación.",
       "localModelStorage": "Almacenamiento Local",

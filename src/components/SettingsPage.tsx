@@ -13,8 +13,10 @@ import { useAgentName } from "../utils/agentName";
 import { useWhisper } from "../hooks/useWhisper";
 import { usePermissions } from "../hooks/usePermissions";
 import { useClipboard } from "../hooks/useClipboard";
+import { useTheme } from "../hooks/useTheme";
 import { REASONING_PROVIDERS } from "../utils/languages";
 import { formatHotkeyLabel } from "../utils/hotkeys";
+import { Sun, Moon, Monitor } from "lucide-react";
 import LanguageSelector from "./ui/LanguageSelector";
 import { LanguageSwitcher } from "./ui/LanguageSwitcher";
 import PromptStudio from "./ui/PromptStudio";
@@ -23,7 +25,9 @@ import AIModelSelectorEnhanced from "./AIModelSelectorEnhanced";
 import MicrophoneSelector from "./ui/MicrophoneSelector";
 import type { UpdateInfoResult } from "../types/electron";
 import HotkeyRecorder from "./ui/HotkeyRecorder";
+
 import { AudioVisualizer } from "./ui/AudioVisualizer";
+import { ThemeSelector } from "./ui/ThemeSelector";
 const InteractiveKeyboard = React.lazy(() => import("./ui/Keyboard"));
 
 export type SettingsSectionType =
@@ -220,7 +224,7 @@ export default function SettingsPage({
   // Defer heavy operations for better performance
   useEffect(() => {
     let mounted = true;
-    let unsubscribeUpdates;
+    let unsubscribeUpdates: (() => void) | undefined;
 
     // Defer version and update checks to improve initial render
     const timer = setTimeout(async () => {
@@ -513,6 +517,21 @@ export default function SettingsPage({
               <LanguageSwitcher />
             </div>
 
+            {/* Appearance Section */}
+            <div className="border-b pb-8">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 dark:text-white">
+                  {t('settings.appearance.title', 'Appearance')}
+                </h3>
+                <p className="text-sm text-gray-600 mb-4 dark:text-gray-300">
+                  {t('settings.general.preferredTheme', 'Choose your preferred theme')}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <ThemeSelector />
+              </div>
+            </div>
+
             {/* App Updates Section */}
             <div className="space-y-6">
               <div>
@@ -550,6 +569,7 @@ export default function SettingsPage({
               </div>
               <div className="space-y-3">
                 <Button
+                  className="w-full bg-[#4E3F30] hover:bg-[#3E3226] text-[#FEFEEB]"
                   onClick={async () => {
                     setCheckingForUpdates(true);
                     try {
