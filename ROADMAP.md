@@ -23,15 +23,15 @@ This document tracks the ongoing improvements and planned integrations for OpenW
 - **Hotkeys**: Enforced safe 2-key combinations to prevent accidental triggers.
 - **Model Deletion**: Fixed bug where local models couldn't be removed.
 
+### ⚡ Performance & Cloud (PR #58)
+- **Groq Whisper**: Integrated `whisper-large-v3-turbo` for ~300ms transcription speeds.
+- **Smart Routing**: Auto-fallback logic between Groq and OpenAI.
+- **Metrics**: Added comprehensive performance logging to identifying bottlenecks.
 ---
 
 ## 🚀 Upcoming / Planned Integrations (The "Big 4")
 
-### 1. ⚡ Groq Whisper Integration (PR #58) - **RECOMMENDED NEXT**
-*Status: Ready for Integration*
-- **Benefit**: Extreme speed. Reduces transcription time from ~4s to ~1.4s.
-- **Tech**: Uses `whisper-large-v3-turbo` via Groq Cloud.
-- **Features**: Includes comprehensive performance logging and clipboard optimization.
+
 
 ### 2. 🧠 DeepSeek Model Support
 *Status: Candidate*
@@ -44,6 +44,7 @@ This document tracks the ongoing improvements and planned integrations for OpenW
 - **Tech**: AppImage builds, Wayland support tweaks.
 
 ### 4. 🔗 Advanced MCP / Workflow Integrations
-*Status: Candidate*
+*Status: On Hold (Future)*
 - **Benefit**: Connect OpenWhispr to n8n, GitHub, etc.
 - **Tech**: Model Context Protocol integration for smart agent capabilities.
+
