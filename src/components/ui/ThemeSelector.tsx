@@ -12,7 +12,7 @@ export function ThemeSelector() {
                 size="sm"
                 onClick={() => setTheme("light")}
                 className={`flex-1 gap-2 ${theme === "light"
-                    ? "bg-white shadow-sm text-primary dark:bg-[#4E3F30] dark:text-primary-foreground"
+                    ? "bg-white shadow-sm text-primary dark:bg-[#40342A] dark:text-primary-foreground"
                     : "text-neutral-500 hover:text-neutral-900 dark:text-gray-400 dark:hover:text-gray-100"
                     }`}
             >
@@ -24,7 +24,7 @@ export function ThemeSelector() {
                 size="sm"
                 onClick={() => setTheme("dark")}
                 className={`flex-1 gap-2 ${theme === "dark"
-                    ? "bg-white shadow-sm text-primary dark:bg-[#4E3F30] dark:text-primary-foreground"
+                    ? "bg-white shadow-sm text-primary dark:bg-[#40342A] dark:text-primary-foreground"
                     : "text-neutral-500 hover:text-neutral-900 dark:text-gray-400 dark:hover:text-gray-100"
                     }`}
             >
@@ -36,7 +36,7 @@ export function ThemeSelector() {
                 size="sm"
                 onClick={() => setTheme("system")}
                 className={`flex-1 gap-2 ${theme === "system"
-                    ? "bg-white shadow-sm text-primary dark:bg-[#4E3F30] dark:text-primary-foreground"
+                    ? "bg-white shadow-sm text-primary dark:bg-[#40342A] dark:text-primary-foreground"
                     : "text-neutral-500 hover:text-neutral-900 dark:text-gray-400 dark:hover:text-gray-100"
                     }`}
             >

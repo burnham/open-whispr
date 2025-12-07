@@ -4,6 +4,16 @@ export default {
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
+    /**
+     * DARK MODE STRATEGY:
+     * Using class-based dark mode ('darkMode: class').
+     * Colors are mapped to CSS variables (defined in src/index.css) to support:
+     * 1. Dynamic switching (Light/Dark/System).
+     * 2. The "Elegant Theme" palette without changing class names in React components.
+     * 
+     * Example: 'bg-background' resolves to 'var(--color-background)', 
+     * which changes from Cream (#FEFEEB) to Coffee (#292420) based on parent class.
+     */
     darkMode: 'class',
     theme: {
         extend: {
