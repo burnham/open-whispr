@@ -26,8 +26,9 @@ def get_ffmpeg_path():
     ]
     
     for env_name, env_path in env_paths:
-        if env_path and os.path.exists(env_path) and os.access(env_path, os.X_OK):
-            return env_path
+        if env_path and os.path.exists(env_path):
+            if sys.platform == "win32" or os.access(env_path, os.X_OK):
+                return env_path
     
     # Determine base path
     if getattr(sys, 'frozen', False):
@@ -100,7 +101,7 @@ if ffmpeg_path:
     ffmpeg_dir = os.path.dirname(os.path.abspath(ffmpeg_path))
     current_path = os.environ.get("PATH", "")
     if ffmpeg_dir not in current_path:
-        os.environ["PATH"] = f"{ffmpeg_dir}:{current_path}"
+        os.environ["PATH"] = f"{ffmpeg_dir}{os.pathsep}{current_path}"
     
     # For Whisper library, we need to ensure 'ffmpeg' command works
     # Create a symlink if needed (for macOS/Linux)

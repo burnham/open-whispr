@@ -7,6 +7,7 @@ Tracks timing metrics for transcription and post-processing steps
 import time
 import json
 import os
+import sys
 from datetime import datetime
 from typing import Optional, Dict, Any
 
@@ -46,11 +47,11 @@ class PerformanceLogger:
         }
 
         if self.console_output:
-            print(f"\n{'='*60}")
-            print(f"🎵 Performance Tracking Started")
-            print(f"   File: {os.path.basename(audio_file)}")
-            print(f"   Size: {self.current_session['file_size_mb']} MB ({file_size:,} bytes)")
-            print(f"{'='*60}")
+            print(f"\n{'='*60}", file=sys.stderr)
+            print(f"--- Performance Tracking Started", file=sys.stderr)
+            print(f"   File: {os.path.basename(audio_file)}", file=sys.stderr)
+            print(f"   Size: {self.current_session['file_size_mb']} MB ({file_size:,} bytes)", file=sys.stderr)
+            print(f"{'='*60}", file=sys.stderr)
 
     def log_step(self, step_name: str, duration_ms: float, **metadata) -> None:
         """
@@ -69,11 +70,11 @@ class PerformanceLogger:
         self.current_session["steps"][step_name] = step_data
 
         if self.console_output:
-            print(f"⏱️  {step_name}: {duration_ms:.0f}ms", end="")
+            print(f">   {step_name}: {duration_ms:.0f}ms", end="", file=sys.stderr)
             if metadata:
                 meta_str = ", ".join(f"{k}={v}" for k, v in metadata.items())
-                print(f" ({meta_str})", end="")
-            print()
+                print(f" ({meta_str})", end="", file=sys.stderr)
+            print(file=sys.stderr)
 
     def end_session(self, success: bool = True, error: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -112,20 +113,20 @@ class PerformanceLogger:
 
     def _print_summary(self) -> None:
         """Print a formatted summary of the session"""
-        print(f"\n{'='*60}")
-        print(f"📊 Performance Summary")
-        print(f"{'='*60}")
+        print(f"\n{'='*60}", file=sys.stderr)
+        print(f"📊 Performance Summary", file=sys.stderr)
+        print(f"{'='*60}", file=sys.stderr)
 
         # File info
-        print(f"File: {self.current_session['audio_file']}")
-        print(f"Size: {self.current_session['file_size_mb']} MB")
-        print(f"Status: {'✅ Success' if self.current_session.get('success', False) else '❌ Failed'}")
+        print(f"File: {self.current_session['audio_file']}", file=sys.stderr)
+        print(f"Size: {self.current_session['file_size_mb']} MB", file=sys.stderr)
+        print(f"Status: {'✅ Success' if self.current_session.get('success', False) else '❌ Failed'}", file=sys.stderr)
 
         if self.current_session.get('error'):
-            print(f"Error: {self.current_session['error']}")
+            print(f"Error: {self.current_session['error']}", file=sys.stderr)
 
-        print(f"\n{'Step Breakdown:':<30} {'Time':<12} {'%':<8}")
-        print(f"{'-'*50}")
+        print(f"\n{'Step Breakdown:':<30} {'Time':<12} {'%':<8}", file=sys.stderr)
+        print(f"{'-'*50}", file=sys.stderr)
 
         # Sort steps by duration (descending)
         sorted_steps = sorted(
@@ -137,11 +138,11 @@ class PerformanceLogger:
         for step_name, step_data in sorted_steps:
             duration = step_data["duration_ms"]
             percentage = self.current_session["breakdown_percent"].get(step_name, 0)
-            print(f"{step_name:<30} {duration:>8.0f}ms   {percentage:>5.1f}%")
+            print(f"{step_name:<30} {duration:>8.0f}ms   {percentage:>5.1f}%", file=sys.stderr)
 
-        print(f"{'-'*50}")
-        print(f"{'TOTAL':<30} {self.current_session['total_time_ms']:>8.0f}ms   100.0%")
-        print(f"{'='*60}\n")
+        print(f"{'-'*50}", file=sys.stderr)
+        print(f"{'TOTAL':<30} {self.current_session['total_time_ms']:>8.0f}ms   100.0%", file=sys.stderr)
+        print(f"{'='*60}\n", file=sys.stderr)
 
     def _write_to_file(self) -> None:
         """Write session data to log file in JSON Lines format"""
@@ -156,7 +157,7 @@ class PerformanceLogger:
                 f.write(json.dumps(self.current_session) + '\\n')
         except Exception as e:
             if self.console_output:
-                print(f"⚠️  Warning: Failed to write to log file: {e}")
+                print(f"Warning: Failed to write to log file: {e}", file=sys.stderr)
 
 
 class StepTimer:
@@ -265,11 +266,11 @@ def analyze_logs(log_file: str = "performance_logs.jsonl",
 def print_analysis(analysis: Dict[str, Any]) -> None:
     """Print formatted analysis results"""
     if "error" in analysis:
-        print(f"❌ Error: {analysis['error']}")
+        print(f"Error: {analysis['error']}")
         return
 
     print(f"\n{'='*70}")
-    print(f"📈 Performance Analysis Report")
+    print(f"Performance Analysis Report")
     print(f"{'='*70}")
 
     # Summary
@@ -281,14 +282,14 @@ def print_analysis(analysis: Dict[str, Any]) -> None:
 
     # Overall performance
     overall = analysis["overall_performance"]
-    print(f"\n⏱️  Overall Performance:")
+    print(f"\nOverall Performance:")
     print(f"   Average Total Time: {overall['avg_total_time_ms']:.0f}ms")
     print(f"   Min Total Time: {overall['min_total_time_ms']:.0f}ms")
     print(f"   Max Total Time: {overall['max_total_time_ms']:.0f}ms")
     print(f"   Average File Size: {overall['avg_file_size_mb']:.2f} MB")
 
     # Step performance
-    print(f"\n🔍 Step Performance (Average):")
+    print(f"\nStep Performance (Average):")
     print(f"   {'Step':<30} {'Avg':<12} {'Min':<12} {'Max':<12} {'Count':<8}")
     print(f"   {'-'*74}")
 

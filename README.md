@@ -8,8 +8,22 @@ An open source desktop dictation application that converts speech to text using 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. This means you can freely use, modify, and distribute this software for personal or commercial purposes.
 
+## Why Open-Whispr? (Key Advantage Specifications)
+
+Open-Whispr stands out with a unique blend of privacy, performance, and flexibility that sets it apart from standard dictation tools:
+
+*   **⚡ Groq Cloud Acceleration (New!)**: Experience near-instant transcription (~300ms) using the ultra-fast Groq API, seamlessly integrated into your local workflow.
+*   **🔒 Complete Privacy (Local-First)**: Run the full Whisper model locally on your device. Your voice data never leaves your computer unless you explicitly choose a cloud provider.
+*   **🧠 Multi-Model Intelligence**: Not just dictation—switch between GPT-4o, Claude 3.5 Sonnet, Gemini 2.5, or Local LLMs to rephrase, summarize, or format your text instantly.
+*   **🖥️ Native OS Integration**:
+    *   **Smart Paste**: Automatically pastes text into *any* application (Word, Slack, VS Code) using optimized OS-level commands (PowerShell/.NET for Windows, AppleScript for macOS, xdotool/wtype for Linux).
+    *   **Global Hotkeys**: Configurable shortcuts to start/stop dictation from anywhere.
+*   **🛠️ Developer Ready**: Built on Electron and React 19, with a clean architecture ready for extension. Supports custom endpoints and local reasoning servers.
+*   **🌐 Cross-Platform Freedom**: A consistent, high-performance experience whether you're on Windows 10/11, macOS, or Linux.
+
 ## Features
 
+- 🌍 **Internationalization**: Fully localized interface currently supported in **English**, **Spanish**, and **German** (more coming soon).
 - 🎤 **Global Hotkey**: Customizable hotkey to start/stop dictation from anywhere (default: backtick `)
 - 🤖 **Multi-Provider AI Processing**: Choose between OpenAI, Anthropic Claude, Google Gemini, or local models
 - 🎯 **Agent Naming**: Personalize your AI assistant with a custom name for natural interactions

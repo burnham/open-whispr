@@ -46,7 +46,7 @@ export const usePermissions = (
 
   const testAccessibilityPermission = useCallback(async () => {
     try {
-      await window.electronAPI.pasteText("OpenWhispr accessibility test");
+      await (window as any).electronAPI.pasteText("OpenWhispr accessibility test");
       setAccessibilityPermissionGranted(true);
       const successTitle = t('dialogs.accessibilitySuccess', "✅ Accessibility Test Successful");
       const successDesc = t('dialogs.accessibilitySuccessDesc', "Accessibility permissions working! Check if the test text appeared in another app.");

@@ -10,6 +10,7 @@
     "main.js",
     "preload.js",
     "whisper_bridge.py",
+    "performance_logger.py",
     "package.json",
     "node_modules/**/*",
     "src/dist/**/*",
@@ -25,6 +26,7 @@
   ],
   "asarUnpack": [
     "whisper_bridge.py",
+    "performance_logger.py",
     "**/node_modules/ffmpeg-static/**/*",
     "**/node_modules/better-sqlite3/**/*"
   ],
@@ -38,11 +40,17 @@
     "target": [
       {
         "target": "dmg",
-        "arch": ["x64", "arm64"]
+        "arch": [
+          "x64",
+          "arm64"
+        ]
       },
       {
         "target": "zip",
-        "arch": ["x64", "arm64"]
+        "arch": [
+          "x64",
+          "arm64"
+        ]
       }
     ],
     "icon": "src/assets/icon.icns",

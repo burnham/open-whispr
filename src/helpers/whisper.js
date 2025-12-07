@@ -387,6 +387,7 @@ class WhisperManager {
         FFMPEG_PATH: absoluteFFmpegPath,
         FFMPEG_EXECUTABLE: absoluteFFmpegPath,
         FFMPEG_BINARY: absoluteFFmpegPath,
+        PYTHONIOENCODING: "utf-8",
       };
 
       debugLogger.logFFmpegDebug('Setting FFmpeg env vars', absoluteFFmpegPath);
@@ -540,6 +541,12 @@ class WhisperManager {
 
       const result = JSON.parse(jsonLine);
 
+      // Handle explicit error from Python script
+      if (result.success === false) {
+        return { success: false, error: result.error || "Unknown Whisper error" };
+      }
+
+      // Handle empty transcription (succcess=true but empty text)
       if (!result.text || result.text.trim().length === 0) {
         return { success: false, message: "No audio detected" };
       }

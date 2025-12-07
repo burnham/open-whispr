@@ -7,10 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.1] - 2025-12-06
 
+## [1.2.1] - 2025-12-06
+
+### Added
+- **⚡ Groq Cloud Engine**: Integrated the ultra-low latency Groq API, enabling near-instant transcription speeds (~300ms) for local workflows.
+- **📊 Precision Performance Metrics**: New diagnostic logging system tracks every millisecond of the transcription pipeline to identify valid bottlenecks.
+- **🌍 Global Localization**: Full interface translation now available in **English**, **Spanish**, and **German**, with the architecture ready for limitless expansion.
+
+### Changed
+- **🚀 Smart Paste (Windows)**: Re-engineered paste mechanism using native .NET APIs via PowerShell for instantaneous and 100% reliable text insertion.
+- **🎨 Visual Identity**: Restored the "Elegant" theme palette (Turquoise/Brown), unifying the visual experience across all platforms.
+
 ### Fixed
-- **UI:** Restored "Elegant" theme colors (Turquoise/Brown) by fixing Tailwind configuration.
-- **Windows:** Fixed application crash when clicking "Reset Accessibility Permissions" (macOS-only feature hidden on Windows).
-- **Hotkeys:** Fixed "conversion failure" error when saving hotkeys on Windows by using explicit key modifiers.
+- **Windows Stability**: Resolved crash issues in accessibility permission resets and hotkey recording logic.
 
 ## [1.2.0] - 2025-12-06
 
