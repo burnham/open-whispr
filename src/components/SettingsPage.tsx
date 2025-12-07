@@ -607,7 +607,7 @@ export default function SettingsPage({
                     }
                   }}
                   disabled={checkingForUpdates || updateStatus.isDevelopment}
-                  className="w-full"
+
                 >
                   {checkingForUpdates ? (
                     <>
