@@ -1,5 +1,5 @@
 import React from "react";
-import { Settings, Mic, Brain, User, Sparkles } from "lucide-react";
+import { Settings, Mic, Brain, User, Sparkles, FileText } from "lucide-react";
 import SidebarModal, { SidebarItem } from "./ui/SidebarModal";
 import SettingsPage, { SettingsSectionType } from "./SettingsPage";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,7 @@ export default function SettingsModal({
     { id: "aiModels", label: t('settings.general.menu.aiModels'), icon: Brain },
     { id: "agentConfig", label: t('settings.general.menu.agentConfig'), icon: User },
     { id: "prompts", label: t('settings.general.menu.prompts'), icon: Sparkles },
+    { id: "recent", label: t('controlPanel.recentTranscriptions', 'Recent Transcriptions'), icon: FileText as any },
   ];
 
   const [activeSection, setActiveSection] =

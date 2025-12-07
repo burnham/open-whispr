@@ -28,6 +28,7 @@ import HotkeyRecorder from "./ui/HotkeyRecorder";
 
 import { AudioVisualizer } from "./ui/AudioVisualizer";
 import { ThemeSelector } from "./ui/ThemeSelector";
+import RecentTranscriptions from "./RecentTranscriptions";
 const InteractiveKeyboard = React.lazy(() => import("./ui/Keyboard"));
 
 export type SettingsSectionType =
@@ -35,7 +36,8 @@ export type SettingsSectionType =
   | "transcription"
   | "aiModels"
   | "agentConfig"
-  | "prompts";
+  | "prompts"
+  | "recent";
 
 interface SettingsPageProps {
   activeSection?: SettingsSectionType;
@@ -510,7 +512,7 @@ export default function SettingsPage({
             {/* Language Section */}
             <div className="border-b pb-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                   {t('settings.general.title')}
                 </h3>
               </div>
@@ -520,7 +522,7 @@ export default function SettingsPage({
             {/* Appearance Section */}
             <div className="border-b pb-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 dark:text-white">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2 dark:text-white">
                   {t('settings.appearance.title', 'Appearance')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4 dark:text-gray-300">
@@ -535,7 +537,7 @@ export default function SettingsPage({
             {/* App Updates Section */}
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                   {t('settings.general.appUpdates')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4">
@@ -725,8 +727,8 @@ export default function SettingsPage({
                 )}
 
                 {updateInfo.version && (
-                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <h4 className="font-medium text-blue-900 mb-2">
+                  <div className="p-4 bg-blue-50 dark:bg-[#2A241F] border-blue-200 dark:border-[#4E3F30] rounded-lg">
+                    <h4 className="font-medium text-blue-900 dark:text-[#FEFEEB] mb-2">
                       Update v{updateInfo.version}
                     </h4>
                     {updateInfo.releaseDate && (
@@ -735,7 +737,7 @@ export default function SettingsPage({
                       </p>
                     )}
                     {updateInfo.releaseNotes && (
-                      <div className="text-sm text-blue-800">
+                      <div className="text-sm text-blue-800 dark:text-[#FEFEEB]">
                         <p className="font-medium mb-1">{t('settings.general.whatsNew')}</p>
                         <div className="whitespace-pre-wrap">{updateInfo.releaseNotes}</div>
                       </div>
@@ -748,7 +750,7 @@ export default function SettingsPage({
             {/* Hotkey Section */}
             <div className="border-t pt-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                   {t('settings.general.dictationHotkey')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
@@ -759,7 +761,7 @@ export default function SettingsPage({
                       e.preventDefault();
                       window.electronAPI.openExternal("https://github.com/burnham/open-whispr/blob/main/SUPPORTED_SHORTCUTS.md");
                     }}
-                    className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center gap-1"
+                    className="text-indigo-600 dark:text-[#0CA5B0] hover:text-indigo-800 font-medium inline-flex items-center gap-1"
                   >
                     {t('common.learnMore', 'Learn more')} &rarr;
                   </a>
@@ -788,7 +790,7 @@ export default function SettingsPage({
             {/* Microphone Section */}
             <div className="border-t pt-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                   {t('settings.transcription.microphone')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
@@ -821,7 +823,7 @@ export default function SettingsPage({
             {/* Permissions Section */}
             <div className="border-t pt-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                   {t('settings.general.permissions')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
@@ -870,7 +872,7 @@ export default function SettingsPage({
             {/* About Section */}
             <div className="border-t pt-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                   {t('settings.general.about')}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
@@ -879,7 +881,7 @@ export default function SettingsPage({
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-6">
                 <div className="text-center p-4 border border-gray-200 rounded-xl bg-white">
-                  <div className="w-8 h-8 mx-auto mb-2 bg-indigo-600 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 mx-auto mb-2 bg-indigo-600 dark:bg-[#4E3F30] rounded-lg flex items-center justify-center">
                     <Keyboard className="w-4 h-4 text-white" />
                   </div>
                   <p className="font-medium text-gray-800 mb-1">
@@ -988,7 +990,7 @@ export default function SettingsPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-4">
                 {t('settings.transcription.speechToText')}
               </h3>
               <ProcessingModeSelector
@@ -1003,8 +1005,8 @@ export default function SettingsPage({
 
 
             {!useLocalWhisper && (
-              <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                <h4 className="font-medium text-blue-900">{t('settings.transcription.openAiSetup')}</h4>
+              <div className="space-y-4 p-4 bg-blue-50 dark:bg-[#2A241F] border-blue-200 dark:border-[#4E3F30] rounded-xl">
+                <h4 className="font-medium text-blue-900 dark:text-[#FEFEEB]">{t('settings.transcription.openAiSetup')}</h4>
                 <ApiKeyInput
                   apiKey={openaiApiKey}
                   setApiKey={setOpenaiApiKey}
@@ -1015,7 +1017,7 @@ export default function SettingsPage({
                         href="https://platform.openai.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 underline"
+                        className="text-blue-600 dark:text-[#0CA5B0] underline"
                       >
                         {t('settings.transcription.getApiKey')}
                       </a>
@@ -1024,7 +1026,7 @@ export default function SettingsPage({
                   }
                 />
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-900">
+                  <label className="block text-sm font-medium text-blue-900 dark:text-[#FEFEEB]">
                     {t('settings.transcription.customBaseUrl')}
                   </label>
                   <Input
@@ -1043,7 +1045,7 @@ export default function SettingsPage({
                       {t('settings.transcription.resetDefault')}
                     </Button>
                   </div>
-                  <p className="text-xs text-blue-800">
+                  <p className="text-xs text-blue-800 dark:text-[#FEFEEB]">
                     {t('settings.transcription.cloudNote')}
                     <code className="ml-1">{API_ENDPOINTS.TRANSCRIPTION_BASE}</code>.
                   </p>
@@ -1090,7 +1092,7 @@ export default function SettingsPage({
             )}
 
             <div className="space-y-4 p-4 bg-gray-50 border border-gray-200 rounded-xl">
-              <h4 className="font-medium text-gray-900">{t('settings.transcription.language')}</h4>
+              <h4 className="font-medium text-gray-900 dark:text-[#FEFEEB]">{t('settings.transcription.language')}</h4>
               <LanguageSelector
                 value={preferredLanguage}
                 onChange={(value) => {
@@ -1140,7 +1142,7 @@ export default function SettingsPage({
                   description: descriptionParts.join(' '),
                 });
               }}
-              className="w-full"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 dark:bg-[#4E3F30] dark:hover:bg-[#3E3226] text-white dark:text-[#FEFEEB]"
             >
               {t('settings.transcription.saveSettings')}
             </Button>
@@ -1151,7 +1153,7 @@ export default function SettingsPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                 {t('settings.aiModels.enhancement')}
               </h3>
               <p className="text-sm text-gray-600 mb-6">
@@ -1181,7 +1183,7 @@ export default function SettingsPage({
               showAlertDialog={showAlertDialog}
             />
 
-            <Button onClick={saveReasoningSettings} className="w-full">
+            <Button onClick={saveReasoningSettings} className="w-full bg-indigo-600 hover:bg-indigo-700 dark:bg-[#4E3F30] dark:hover:bg-[#3E3226] text-white dark:text-[#FEFEEB]">
               {t('settings.aiModels.saveSettings')}
             </Button>
           </div>
@@ -1191,7 +1193,7 @@ export default function SettingsPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                 {t('settings.agentConfig.agentName')}
               </h3>
               <p className="text-sm text-gray-600 mb-6">
@@ -1199,11 +1201,11 @@ export default function SettingsPage({
               </p>
             </div>
 
-            <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-xl">
-              <h4 className="font-medium text-purple-900 mb-3">
+            <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-[#2A241F] dark:to-[#3E362E] border border-purple-200 dark:border-[#4E3F30] rounded-xl">
+              <h4 className="font-medium text-purple-900 dark:text-[#FEFEEB] mb-3">
                 💡 {t('settings.agentConfig.howToUse')}
               </h4>
-              <ul className="text-sm text-purple-800 space-y-2">
+              <ul className="text-sm text-purple-800 dark:text-[#FEFEEB] space-y-2">
                 <li>
                   • {t('settings.agentConfig.tip1').replace('{name}', agentName || 'Agent')}
                 </li>
@@ -1216,8 +1218,8 @@ export default function SettingsPage({
               </ul>
             </div>
 
-            <div className="space-y-4 p-4 bg-gray-50 border border-gray-200 rounded-xl">
-              <h4 className="font-medium text-gray-900">{t('settings.agentConfig.currentName')}</h4>
+            <div className="space-y-4 p-4 bg-gray-50 dark:bg-card border border-gray-200 dark:border-border rounded-xl">
+              <h4 className="font-medium text-gray-900 dark:text-[#FEFEEB]">{t('settings.agentConfig.currentName')}</h4>
               <div className="flex gap-3">
                 <Input
                   placeholder={t('settings.agentConfig.placeholder')}
@@ -1243,11 +1245,11 @@ export default function SettingsPage({
               </p>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">
+            <div className="bg-blue-50 dark:bg-[#2A241F] p-4 rounded-lg">
+              <h4 className="font-medium text-blue-900 dark:text-[#FEFEEB] mb-2">
                 🎯 {t('settings.agentConfig.exampleUsage')}
               </h4>
-              <div className="text-sm text-blue-800 space-y-1">
+              <div className="text-sm text-blue-800 dark:text-[#FEFEEB] space-y-1">
                 <p>
                   • {t('settings.agentConfig.ex1').replace('{name}', agentName || 'Agent')}
                 </p>
@@ -1267,7 +1269,7 @@ export default function SettingsPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
                 {t('settings.prompts.title')}
               </h3>
               <p className="text-sm text-gray-600 mb-6">
@@ -1277,6 +1279,10 @@ export default function SettingsPage({
             <PromptStudio />
           </div>
         );
+
+      case "recent":
+        return <RecentTranscriptions />;
+
       default:
         return null;
     }

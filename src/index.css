@@ -47,16 +47,17 @@
 
 .dark {
   /* OpenWhispr Elegant Dark - Coffee, Cream, Turquoise */
-  --color-background: #2A241F;
-  /* Dark Coffee */
+  /* OpenWhispr Elegant Dark - Coffee, Cream, Turquoise - INTENSIFIED */
+  --color-background: #292420;
+  /* Dark Creamy Coffee (Body) */
   --color-foreground: #FEFEEB;
   /* Cream Text */
 
-  --color-card: #3E362E;
-  /* Lighter Coffee */
+  --color-card: #3C2E24;
+  /* Lighter Coffee (Sidebar) */
   --color-card-foreground: #FEFEEB;
 
-  --color-popover: #3E362E;
+  --color-popover: #2A241F;
   --color-popover-foreground: #FEFEEB;
 
   --color-primary: #0CA5B0;
@@ -87,7 +88,7 @@
 
 @layer base {
   * {
-    @apply border-gray-200 outline-indigo-500/50;
+    @apply border-gray-200 dark:border-[#4E3F30] outline-indigo-500/50 dark:outline-[#0CA5B0]/50;
   }
 
   body {

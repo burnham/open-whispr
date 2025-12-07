@@ -54,8 +54,9 @@ export default function ControlPanel() {
   const { t } = useTranslation();
   // ... (rest of the existing code unchanged until return)
   const history = useTranscriptions();
-  const [isLoading, setIsLoading] = useState(true);
-  const [showSettings, setShowSettings] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  // Auto-open settings by default as it is now the main interface
+  const [showSettings, setShowSettings] = useState(true);
   const { hotkey } = useHotkey();
   const { toast } = useToast();
   const [updateStatus, setUpdateStatus] = useState({
@@ -118,18 +119,10 @@ export default function ControlPanel() {
     };
   }, []);
 
+  // Transcription loading is now handled by the RecentTranscriptions component
+  // We keep this empty or minimal if needed for other features
   const loadTranscriptions = async () => {
-    try {
-      setIsLoading(true);
-      await initializeTranscriptions();
-    } catch (error) {
-      showAlertDialog({
-        title: "Unable to load history",
-        description: "Please try again in a moment.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // No-op or minimal init if needed globally
   };
 
   const copyToClipboard = async (text: string) => {
@@ -259,84 +252,24 @@ export default function ControlPanel() {
         <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
       </ErrorBoundary>
 
-      {/* Main content */}
-      <div className="p-6">
-
-        <div className="space-y-6 max-w-4xl mx-auto">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <FileText size={18} className="text-indigo-600" />
-                  {t('controlPanel.recentTranscriptions')}
-                </CardTitle>
-                <div className="flex gap-2">
-                  {history.length > 0 && (
-                    <Button
-                      onClick={clearHistory}
-                      variant="ghost"
-                      size="icon"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <Trash2 size={16} />
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <div className="text-center py-8">
-                  <div className="w-8 h-8 mx-auto mb-3 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white text-sm">📝</span>
-                  </div>
-                  <p className="text-neutral-600">{t('controlPanel.loading')}</p>
-                </div>
-              ) : history.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-neutral-100 rounded-full flex items-center justify-center">
-                    <Mic className="w-8 h-8 text-neutral-400" />
-                  </div>
-                  <h3 className="text-lg font-medium text-neutral-900 mb-2">
-                    {t('controlPanel.noTranscriptions')}
-                  </h3>
-                  <p className="text-neutral-600 mb-4 max-w-sm mx-auto">
-                    {t('controlPanel.pressHotkey')}
-                  </p>
-                  <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 max-w-md mx-auto">
-                    <h4 className="font-medium text-neutral-800 mb-2">
-                      {t('controlPanel.quickStart')}
-                    </h4>
-                    <ol className="text-sm text-neutral-600 text-left space-y-1">
-                      <li>1. {t('controlPanel.step1')}</li>
-                      <li>
-                        2. {t('controlPanel.step2').replace('{key}', formatHotkeyLabel(hotkey))}
-                      </li>
-                      <li>3. {t('controlPanel.step3')}</li>
-                      <li>
-                        4. {t('controlPanel.step4').replace('{key}', formatHotkeyLabel(hotkey))}
-                      </li>
-                      <li>5. {t('controlPanel.step5')}</li>
-                    </ol>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-3 max-h-80 overflow-y-auto">
-                  {history.map((item, index) => (
-                    <TranscriptionItem
-                      key={item.id}
-                      item={item}
-                      index={index}
-                      total={history.length}
-                      onCopy={copyToClipboard}
-                      onDelete={deleteTranscription}
-                    />
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+      {/* Main content - Fallback if settings are closed */}
+      <div className="flex flex-col items-center justify-center min-h-[80vh] text-center p-6 bg-gray-50 dark:bg-[#292420]">
+        <div className="w-16 h-16 bg-white dark:bg-[#3C2E24] rounded-2xl shadow-sm flex items-center justify-center mb-6">
+          <Settings className="w-8 h-8 text-gray-400 dark:text-[#FEFEEB]" />
         </div>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-[#FEFEEB] mb-2">
+          {t('settings.general.mainTitle')}
+        </h2>
+        <p className="text-gray-500 dark:text-[#FEFEEB]/70 mb-8 max-w-sm">
+          {t('controlPanel.settingsClosedDesc', 'The control panel settings are currently closed.')}
+        </p>
+        <Button
+          onClick={() => setShowSettings(true)}
+          size="lg"
+          className="bg-indigo-600 hover:bg-indigo-700 dark:bg-[#4E3F30] dark:hover:bg-[#3E3226] text-white dark:text-[#FEFEEB]"
+        >
+          {t('common.openSettings', 'Open Settings')}
+        </Button>
       </div>
     </div>
   );

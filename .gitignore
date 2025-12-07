@@ -1,3 +1,6 @@
+# User Notes
+Notes/
+
 # Dependencies
 node_modules/
 npm-debug.log*
@@ -10,6 +13,12 @@ pids
 *.pid
 *.seed
 *.pid.lock
+__pycache__/
+*.pyc
+*.wav
+*.jsonl
+performance_logs.jsonl
+test_audio.wav
 
 # Coverage directory used by tools like istanbul
 coverage/
