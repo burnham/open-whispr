@@ -55,10 +55,11 @@ export default function SidebarModal<T extends string>({
                         className={`w-full flex items-center gap-2 px-3 py-2.5 text-left text-sm rounded-lg transition-all duration-200 ${activeSection === item.id
                           ? "bg-white dark:bg-[#594A3C] text-gray-900 dark:text-[#FEFEEB] shadow-sm border border-gray-200 dark:border-border"
                           : "text-gray-600 dark:text-[#FEFEEB]/70 hover:text-gray-900 dark:hover:text-[#FEFEEB] hover:bg-gray-100 dark:hover:bg-[#594A3C]/50"
+
                           }`}
                       >
                         <Icon
-                          className={`h-4 w-4 flex-shrink-0 ${activeSection === item.id ? "text-indigo-600 dark:text-[#0CA5B0]" : ""
+                          className={`h-4 w-4 flex-shrink-0 ${activeSection === item.id ? "text-indigo-600" : ""
                             }`}
                         />
                         <span className="font-medium flex-1">{item.label}</span>
@@ -69,7 +70,7 @@ export default function SidebarModal<T extends string>({
               </div>
 
               {/* Main Content */}
-              <div className="flex-1 overflow-y-auto bg-white dark:bg-[#594A3C]">
+              <div className="flex-1 overflow-y-auto bg-white">
                 <div className="p-8">
                   <div className="max-w-3xl">{children}</div>
                 </div>
@@ -78,6 +79,6 @@ export default function SidebarModal<T extends string>({
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+    </DialogPrimitive.Root >
   );
 }

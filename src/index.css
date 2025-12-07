@@ -1,60 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  /* ==========================================================================
-     OPENWHISPR ELEGANT THEME (LIGHT MODE)
-     Palette: Turquoise (Primary), Brown (Secondary), Cream (Background)
-     ========================================================================== */
-
-  /* BRAND IDENTITY: Primary Action & Highlight */
+  /* OpenWhispr Elegant Theme - Turquoise, Brown, Cream */
   --color-primary: #0CA5B0;
   /* Turquoise */
   --color-primary-foreground: #ffffff;
 
-  /* SECONDARY: Supporting Elements */
   --color-secondary: #F8F4E4;
   /* Beige */
   --color-secondary-foreground: #4E3F30;
   /* Brown */
 
-  /* MUTED: Subtler Elements */
   --color-muted: #F8F4E4;
+  /* Beige */
   --color-muted-foreground: #A5B3AA;
   /* Grey */
 
-  /* ACCENT: Highlights */
   --color-accent: #4E3F30;
+  /* Brown */
   --color-accent-foreground: #FEFEEB;
+  /* Cream */
 
-  /* DESTRUCTIVE: Errors & Danger Actions */
   --color-destructive: #dc2626;
   --color-destructive-foreground: #ffffff;
 
-  /* BORDERS & INPUTS */
   --color-border: #A5B3AA;
+  /* Grey */
   --color-input: #ffffff;
   --color-ring: #0CA5B0;
 
-  /* LAYOUT & TYPOGRAPHY */
   --color-background: #FEFEEB;
+  /* Cream */
   --color-foreground: #333333;
+  /* Dark Grey for text elegance */
 
-  /* CONTAINERS */
   --color-card: #F8F4E4;
+  /* Beige */
   --color-card-foreground: #333333;
 
   --color-popover: #F8F4E4;
   --color-popover-foreground: #333333;
 
-  /* LINKS */
   --color-link: #0CA5B0;
   --radius: 0.5rem;
-
-  /* Radius helpers for Theme */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
 }
 
 .dark {
@@ -74,7 +62,7 @@
   /* "Espresso" */
   --color-card-foreground: #FEFEEB;
 
-  --color-popover: #362C25;
+  --color-popover: #40342A;
   --color-popover-foreground: #FEFEEB;
 
   /* BRANDING IN DARK MODE */
@@ -105,7 +93,7 @@
 
 @layer base {
   * {
-    @apply border-gray-200 dark:border-[#40342A] outline-indigo-500/50 dark:outline-[#0CA5B0]/50;
+    @apply border-gray-200 outline-indigo-500/50;
   }
 
   body {
@@ -159,11 +147,13 @@ h1 {
   font-weight: 700;
 }
 
+/* Modern Button Styling - handled by button component */
 button {
   font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   cursor: pointer;
 }
 
+/* Ensure all interactive elements have pointer cursor */
 button:hover,
 [role="button"]:hover,
 .cursor-pointer:hover,
@@ -182,6 +172,7 @@ textarea {
   box-shadow: inset 0 1px 3px rgba(43, 31, 20, 0.1);
 }
 
+/* Light mode inputs - embossed parchment */
 :root input,
 :root textarea {
   background-color: #F9F6F1;
@@ -196,19 +187,21 @@ textarea {
   background-color: #FFFFFF;
 }
 
+/* Dark mode inputs */
 .dark input,
 .dark textarea {
-  background-color: #362C25;
-  border: 1px solid #40342A;
-  color: #FEFEEB;
+  background-color: oklch(0.15 0 0);
+  border: 1px solid oklch(0.25 0 0);
+  color: oklch(0.9 0 0);
 }
 
 .dark input:focus,
 .dark textarea:focus {
-  border-color: #0CA5B0;
-  box-shadow: 0 0 0 2px rgba(12, 165, 176, 0.2);
+  border-color: oklch(0.55 0.25 250);
+  box-shadow: 0 0 0 2px oklch(0.55 0.25 250 / 0.2);
 }
 
+/* Card styling - elevated parchment */
 .card {
   background-color: #FFFFFF;
   border: 1px solid #DDD4C7;
@@ -222,6 +215,7 @@ textarea {
   transform: translateY(-1px);
 }
 
+/* Link styling */
 a {
   color: #2E3659;
   text-decoration: none;
@@ -235,6 +229,7 @@ a:hover {
   cursor: pointer;
 }
 
+/* Status indicators */
 .status-active {
   color: #4B2E2B;
   font-weight: 600;
@@ -254,4 +249,12 @@ a:hover {
 
 .text-brand-link {
   color: #2E3659;
+}
+
+/* Additional CSS variables for theme support */
+:root {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
